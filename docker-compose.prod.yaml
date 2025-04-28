@@ -1,19 +1,10 @@
 services:
-  data-studio-ui:
-    container_name: data-studio-ui
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    restart: always
-    expose:
-      - 3000
-    networks:
-      - shared-network
+
   data-studio-api:
     container_name: data-studio-api
     build:
       context: ./backend
-      dockerfile: ./docker/dev.Dockerfile
+      dockerfile: ./docker/prod.Dockerfile
     entrypoint: /app/docker/server-entrypoint.sh
     env_file: .env
     expose:
@@ -29,7 +20,7 @@ services:
     container_name: data-studio-celery-worker
     build:
       context: ./backend
-      dockerfile: ./docker/dev.Dockerfile
+      dockerfile: ./docker/prod.Dockerfile
     entrypoint: /app/docker/celery-entrypoint.sh
     env_file: .env
     restart: always
