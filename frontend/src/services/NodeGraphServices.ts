@@ -205,7 +205,7 @@ const postUserApiKeys = async (settings: LLMSettings) => {
     try {
         const response = await api.post<{
             name: string;
-            id: number;
+            id: string;
             api_key_redacted: string;
         }>('/v1/node-graph/api-services/', settings, config);
         return response;
