@@ -42,21 +42,6 @@ services:
     networks:
       - shared-network
 
-  nginx:
-    build:
-      context: ./backend
-      dockerfile: ./docker/nginx/nginx.Dockerfile
-    volumes:
-      - ./backend/certs:/etc/ssl/certs/:ro
-    env_file: .env
-    ports:
-      - 443:443
-    networks:
-      - shared-network
-    restart: always
-    depends_on:
-      - data-studio-api
-      - data-studio-celery-worker
 
   db:
     image: postgres:15.5-alpine3.19
@@ -70,17 +55,12 @@ services:
     networks:
       - shared-network
 
-
-
 volumes:
   db_data:
     name: db_data
     driver: local
 
 networks:
-  # data-studio-network:
-  #   name: data-studio-network
-  #   driver: bridge
   shared-network:
     name: shared-network
     driver: bridge
