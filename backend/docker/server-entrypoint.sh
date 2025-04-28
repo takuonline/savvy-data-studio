@@ -35,7 +35,7 @@ if [ "$BUILD_ENV" = "development" ]; then
 else
     echo "Running gunicorn..."
 
-gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    gunicorn core.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     # gunicorn -c ./config/gunicorn.prod.conf.py
 
 fi
