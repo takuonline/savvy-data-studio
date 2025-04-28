@@ -51,10 +51,7 @@ export function ApiKeyDialog(props: {
         if (isAxiosError(response)) {
             console.log(response);
             toast.error('Error adding API key');
-        }else {
-
-
-
+        } else {
             dispatch(setApiKeyId(response.data.id));
             toast.success('API key added successfully');
 
