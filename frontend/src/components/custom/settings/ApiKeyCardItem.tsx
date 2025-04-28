@@ -19,7 +19,7 @@ export default function ApiKeyCardItem(props: {
     );
     const dispatch = useAppDispatch();
 
-    const setActivateApiKeyId = (id: number) => {
+    const setActivateApiKeyId = (id: string) => {
         dispatch(setApiKeyId(id));
     };
 

@@ -208,7 +208,7 @@ export const nodeGraphSlice = createSlice({
             state,
             action: PayloadAction<{ nodes: Node[]; edges: Edge[] }>,
         ) => {},
-        setApiKeyId: (state, action: PayloadAction<number>) => {
+        setApiKeyId: (state, action: PayloadAction<string>) => {
             state.settings.openaiKeyId = action.payload;
 
             Utils.saveToLocalStorage('openaiKeyId', action.payload);
