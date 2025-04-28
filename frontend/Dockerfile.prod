@@ -32,7 +32,6 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY next.config.js .env .env.production tsconfig.json .prettierrc.yaml .eslintrc.json components.json  \
-    next-env.d.ts  \
     tailwind.config.ts tailwind.config.js postcss.config.js /app/
 
 WORKDIR /app
