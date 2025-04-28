@@ -11,7 +11,7 @@ services:
       - 8000
     depends_on:
       - data-studio-redis
-      - db
+      - data-studio-db
     restart: always
     networks:
       - shared-network
@@ -29,7 +29,7 @@ services:
     depends_on:
       - data-studio-api
       - data-studio-redis
-      - db
+      - data-studio-db
     networks:
       - shared-network
 
@@ -43,7 +43,7 @@ services:
       - shared-network
 
 
-  db:
+  data-studio-db:
     image: postgres:15.5-alpine3.19
     volumes:
       - db_data:/var/lib/postgresql/data
