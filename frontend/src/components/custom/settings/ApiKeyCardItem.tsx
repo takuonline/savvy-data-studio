@@ -12,7 +12,7 @@ import React from 'react';
 
 export default function ApiKeyCardItem(props: {
     item: ApiKeyItem;
-    onDelete: (id: number) => void;
+    onDelete: (id: string) => void;
 }) {
     const activeApiKeyId = useAppSelector(
         (state: RootState) => state.nodeGraph.settings.openaiKeyId,
