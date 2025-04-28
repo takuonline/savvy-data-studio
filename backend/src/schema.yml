@@ -1,0 +1,2246 @@
+openapi: 3.0.3
+info:
+  title: Savvy data studio
+  version: 1.0.0
+  description: "\n    Inspired by OpenAI's ChatGPT interface, I set out to create\
+    \ a more sophisticated user interface tailored for complex workflows involving\
+    \ large language models (LLMs).\n    Savvy Analytics is the result—a powerful,\
+    \ intuitive platform designed to support intricate prompting and advanced reasoning\
+    \ processes.\n    "
+paths:
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/token/verify/:
+    post:
+      operationId: token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+  /api/users/:
+    get:
+      operationId: users_list
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: users_create
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{id}/:
+    get:
+      operationId: users_retrieve
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      description: This viewset automatically provides `list` and `retrieve` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/logout/:
+    get:
+      operationId: users_logout_retrieve
+      description: |-
+        Get current user.
+
+        Returns the details of the current authenticated user.
+        Accessible at /users/me/.
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/me/:
+    get:
+      operationId: users_me_retrieve
+      description: |-
+        Get current user.
+
+        Returns the details of the current authenticated user.
+        Accessible at /users/me/.
+      tags:
+      - users
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/documents/:
+    get:
+      operationId: v1_documents_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProcessedStoredDataList'
+          description: ''
+    post:
+      operationId: v1_documents_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+  /api/v1/documents/{id}/:
+    get:
+      operationId: v1_documents_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this processed stored data.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+    put:
+      operationId: v1_documents_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this processed stored data.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+    patch:
+      operationId: v1_documents_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this processed stored data.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProcessedStoredData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProcessedStoredData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProcessedStoredData'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+    delete:
+      operationId: v1_documents_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this processed stored data.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/documents/process-store/:
+    post:
+      operationId: v1_documents_process_store_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProcessedStoredData'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+  /api/v1/documents/retrieve-stored/:
+    get:
+      operationId: v1_documents_retrieve_stored_retrieve
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedStoredData'
+          description: ''
+  /api/v1/node-graph/api-services/:
+    get:
+      operationId: v1_node_graph_api_services_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLLMServiceKeysList'
+          description: ''
+    post:
+      operationId: v1_node_graph_api_services_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LLMServiceKeys'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LLMServiceKeys'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LLMServiceKeys'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LLMServiceKeys'
+          description: ''
+  /api/v1/node-graph/api-services/{id}/:
+    delete:
+      operationId: v1_node_graph_api_services_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this llm service keys.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/node-graph/chat-models/:
+    get:
+      operationId: v1_node_graph_chat_models_list
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedChatOpenaiList'
+          description: ''
+    post:
+      operationId: v1_node_graph_chat_models_create
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatOpenai'
+          description: ''
+  /api/v1/node-graph/chat-models/{id}/:
+    get:
+      operationId: v1_node_graph_chat_models_retrieve
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat open ai.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatOpenai'
+          description: ''
+    put:
+      operationId: v1_node_graph_chat_models_update
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat open ai.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatOpenai'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatOpenai'
+          description: ''
+    patch:
+      operationId: v1_node_graph_chat_models_partial_update
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat open ai.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChatOpenai'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChatOpenai'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChatOpenai'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatOpenai'
+          description: ''
+    delete:
+      operationId: v1_node_graph_chat_models_destroy
+      description: |-
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat open ai.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/node-graph/chat-prompts/:
+    get:
+      operationId: v1_node_graph_chat_prompts_list
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedChatPromptTemplateList'
+          description: ''
+    post:
+      operationId: v1_node_graph_chat_prompts_create
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPromptTemplate'
+          description: ''
+  /api/v1/node-graph/chat-prompts/{id}/:
+    get:
+      operationId: v1_node_graph_chat_prompts_retrieve
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat prompt template.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPromptTemplate'
+          description: ''
+    put:
+      operationId: v1_node_graph_chat_prompts_update
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat prompt template.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatPromptTemplate'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPromptTemplate'
+          description: ''
+    patch:
+      operationId: v1_node_graph_chat_prompts_partial_update
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat prompt template.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChatPromptTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedChatPromptTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChatPromptTemplate'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPromptTemplate'
+          description: ''
+    delete:
+      operationId: v1_node_graph_chat_prompts_destroy
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat prompt template.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/node-graph/chat-prompts/{id}/prompt/:
+    get:
+      operationId: v1_node_graph_chat_prompts_prompt_retrieve
+      description: |-
+        A viewset that provides default
+          create(), retrieve(), update(), partial_update(), destroy() and list() actions.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this chat prompt template.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPromptTemplate'
+          description: ''
+  /api/v1/node-graph/node-graphs/:
+    get:
+      operationId: v1_node_graph_node_graphs_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNodeGraphList'
+          description: ''
+    post:
+      operationId: v1_node_graph_node_graphs_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeGraph'
+          description: ''
+  /api/v1/node-graph/node-graphs/{id}/:
+    get:
+      operationId: v1_node_graph_node_graphs_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this node graph.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeGraph'
+          description: ''
+    put:
+      operationId: v1_node_graph_node_graphs_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this node graph.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NodeGraph'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeGraph'
+          description: ''
+    patch:
+      operationId: v1_node_graph_node_graphs_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this node graph.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNodeGraph'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNodeGraph'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNodeGraph'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeGraph'
+          description: ''
+    delete:
+      operationId: v1_node_graph_node_graphs_destroy
+      description: Destroy a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this node graph.
+        required: true
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/node-graph/query-model/:
+    get:
+      operationId: v1_node_graph_query_model_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedQueryChatModelList'
+          description: ''
+    post:
+      operationId: v1_node_graph_query_model_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryChatModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QueryChatModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QueryChatModel'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryChatModel'
+          description: ''
+  /api/v1/node-graph/vector-db/generate/:
+    get:
+      operationId: v1_node_graph_vector_db_generate_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedQueryVectorDBList'
+          description: ''
+    post:
+      operationId: v1_node_graph_vector_db_generate_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryVectorDB'
+          description: ''
+  /api/v1/node-graph/vector-db/search/:
+    post:
+      operationId: v1_node_graph_vector_db_search_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QueryVectorDB'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryVectorDB'
+          description: ''
+components:
+  schemas:
+    BlankEnum:
+      enum:
+      - ''
+    ChatOpenai:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        cache:
+          type: boolean
+          nullable: true
+          description: Whether to cache the response.
+        callback_manager:
+          nullable: true
+          description: Callback manager to add to the run trace.
+        callbacks:
+          nullable: true
+          description: Callbacks to add to the run trace.
+        default_headers:
+          nullable: true
+          description: Default headers for HTTP requests.
+        default_query:
+          nullable: true
+          description: Default query parameters for HTTP requests.
+        http_client:
+          type: string
+          nullable: true
+          description: Optional httpx.Client.
+        max_retries:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Maximum number of retries to make when generating.
+        max_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: Maximum number of tokens to generate.
+        metadata:
+          nullable: true
+          description: Metadata to add to the run trace.
+        model_kwargs:
+          nullable: true
+          description: Holds any model parameters valid for create call not explicitly
+            specified.
+        model_name:
+          nullable: true
+          description: |-
+            Model name to use.
+
+            * `text-search-babbage-doc-001` - text-search-babbage-doc-001
+            * `gpt-4-vision-preview` - gpt-4-vision-preview
+            * `curie-search-query` - curie-search-query
+            * `text-search-babbage-query-001` - text-search-babbage-query-001
+            * `babbage` - babbage
+            * `babbage-search-query` - babbage-search-query
+            * `text-babbage-001` - text-babbage-001
+            * `text-similarity-davinci-001` - text-similarity-davinci-001
+            * `davinci-similarity` - davinci-similarity
+            * `code-davinci-edit-001` - code-davinci-edit-001
+            * `curie-similarity` - curie-similarity
+            * `babbage-search-document` - babbage-search-document
+            * `curie-instruct-beta` - curie-instruct-beta
+            * `text-search-ada-doc-001` - text-search-ada-doc-001
+            * `davinci-instruct-beta` - davinci-instruct-beta
+            * `text-similarity-babbage-001` - text-similarity-babbage-001
+            * `text-search-davinci-doc-001` - text-search-davinci-doc-001
+            * `gpt-4-0314` - gpt-4-0314
+            * `babbage-similarity` - babbage-similarity
+            * `text-embedding-ada-002` - text-embedding-ada-002
+            * `davinci-search-query` - davinci-search-query
+            * `text-similarity-curie-001` - text-similarity-curie-001
+            * `gpt-4` - gpt-4
+            * `text-davinci-001` - text-davinci-001
+            * `text-search-davinci-query-001` - text-search-davinci-query-001
+            * `ada-search-document` - ada-search-document
+            * `ada-code-search-code` - ada-code-search-code
+            * `babbage-002` - babbage-002
+            * `davinci-002` - davinci-002
+            * `davinci-search-document` - davinci-search-document
+            * `curie-search-document` - curie-search-document
+            * `babbage-code-search-code` - babbage-code-search-code
+            * `text-search-ada-query-001` - text-search-ada-query-001
+            * `code-search-ada-text-001` - code-search-ada-text-001
+            * `babbage-code-search-text` - babbage-code-search-text
+            * `code-search-babbage-code-001` - code-search-babbage-code-001
+            * `ada-search-query` - ada-search-query
+            * `gpt-4-1106-preview` - gpt-4-1106-preview
+            * `ada-code-search-text` - ada-code-search-text
+            * `tts-1-hd` - tts-1-hd
+            * `text-search-curie-query-001` - text-search-curie-query-001
+            * `text-davinci-002` - text-davinci-002
+            * `text-davinci-edit-001` - text-davinci-edit-001
+            * `code-search-babbage-text-001` - code-search-babbage-text-001
+            * `tts-1-hd-1106` - tts-1-hd-1106
+            * `ada` - ada
+            * `gpt-3.5-turbo-0613` - gpt-3.5-turbo-0613
+            * `text-ada-001` - text-ada-001
+            * `ada-similarity` - ada-similarity
+            * `code-search-ada-code-001` - code-search-ada-code-001
+            * `text-similarity-ada-001` - text-similarity-ada-001
+            * `gpt-4-0613` - gpt-4-0613
+            * `canary-whisper` - canary-whisper
+            * `gpt-3.5-turbo` - gpt-3.5-turbo
+            * `whisper-1` - whisper-1
+            * `text-search-curie-doc-001` - text-search-curie-doc-001
+            * `text-davinci-003` - text-davinci-003
+            * `text-curie-001` - text-curie-001
+            * `curie` - curie
+            * `canary-tts` - canary-tts
+            * `tts-1` - tts-1
+            * `davinci` - davinci
+            * `gpt-3.5-turbo-1106` - gpt-3.5-turbo-1106
+            * `gpt-3.5-turbo-0301` - gpt-3.5-turbo-0301
+            * `dall-e-2` - dall-e-2
+            * `gpt-3.5-turbo-16k-0613` - gpt-3.5-turbo-16k-0613
+            * `tts-1-1106` - tts-1-1106
+            * `dall-e-3` - dall-e-3
+            * `gpt-3.5-turbo-instruct-0914` - gpt-3.5-turbo-instruct-0914
+            * `gpt-3.5-turbo-instruct` - gpt-3.5-turbo-instruct
+            * `gpt-3.5-turbo-16k` - gpt-3.5-turbo-16k
+          oneOf:
+          - $ref: '#/components/schemas/ModelNameEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        n:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: Number of chat completions to generate for each prompt.
+        openai_api_base:
+          type: string
+          nullable: true
+          description: Base URL path for API requests, leave blank if not using a
+            proxy or service emulator.
+          maxLength: 200
+        openai_api_key:
+          type: string
+          nullable: true
+          description: API key for OpenAI, automatically inferred from env var OPENAI_API_KEY
+            if not provided.
+          maxLength: 200
+        openai_organization:
+          type: string
+          nullable: true
+          description: Organization ID for OpenAI, automatically inferred from env
+            var OPENAI_ORG_ID if not provided.
+          maxLength: 200
+        openai_proxy:
+          type: string
+          nullable: true
+          description: Proxy settings for OpenAI API.
+          maxLength: 200
+        request_timeout:
+          type: number
+          format: double
+          nullable: true
+          description: Timeout for requests to OpenAI completion API. Can be float,
+            httpx.Timeout or None.
+        streaming:
+          type: boolean
+          description: Whether to stream the results or not.
+        tags:
+          nullable: true
+          description: Tags to add to the run trace.
+        temperature:
+          type: number
+          format: double
+          nullable: true
+          description: Sampling temperature to use.
+        tiktoken_model_name:
+          type: string
+          nullable: true
+          description: Model name to pass to tiktoken. Use a different model name
+            here in special cases.
+          maxLength: 100
+        verbose:
+          type: boolean
+          nullable: true
+          description: Whether to print out response text.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - owner
+      - updated_at
+    ChatPromptTemplate:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        system_prompt:
+          type: string
+          nullable: true
+          description: System message prompt template
+        human_prompt:
+          type: string
+          description: Human message prompt template.
+        document_prompt:
+          type: string
+          nullable: true
+          description: Human message prompt template.
+        ai_prompt:
+          type: string
+          nullable: true
+          description: "\tAI message prompt template."
+        ai_response:
+          type: string
+          nullable: true
+          description: "\tAI message response template."
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - owner
+      - updated_at
+    LLMServiceKeys:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        api_key:
+          type: string
+          writeOnly: true
+        api_key_redacted:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - api_key
+      - api_key_redacted
+      - created_at
+      - id
+      - name
+      - owner
+      - updated_at
+    ModelNameEnum:
+      enum:
+      - text-search-babbage-doc-001
+      - gpt-4-vision-preview
+      - curie-search-query
+      - text-search-babbage-query-001
+      - babbage
+      - babbage-search-query
+      - text-babbage-001
+      - text-similarity-davinci-001
+      - davinci-similarity
+      - code-davinci-edit-001
+      - curie-similarity
+      - babbage-search-document
+      - curie-instruct-beta
+      - text-search-ada-doc-001
+      - davinci-instruct-beta
+      - text-similarity-babbage-001
+      - text-search-davinci-doc-001
+      - gpt-4-0314
+      - babbage-similarity
+      - text-embedding-ada-002
+      - davinci-search-query
+      - text-similarity-curie-001
+      - gpt-4
+      - text-davinci-001
+      - text-search-davinci-query-001
+      - ada-search-document
+      - ada-code-search-code
+      - babbage-002
+      - davinci-002
+      - davinci-search-document
+      - curie-search-document
+      - babbage-code-search-code
+      - text-search-ada-query-001
+      - code-search-ada-text-001
+      - babbage-code-search-text
+      - code-search-babbage-code-001
+      - ada-search-query
+      - gpt-4-1106-preview
+      - ada-code-search-text
+      - tts-1-hd
+      - text-search-curie-query-001
+      - text-davinci-002
+      - text-davinci-edit-001
+      - code-search-babbage-text-001
+      - tts-1-hd-1106
+      - ada
+      - gpt-3.5-turbo-0613
+      - text-ada-001
+      - ada-similarity
+      - code-search-ada-code-001
+      - text-similarity-ada-001
+      - gpt-4-0613
+      - canary-whisper
+      - gpt-3.5-turbo
+      - whisper-1
+      - text-search-curie-doc-001
+      - text-davinci-003
+      - text-curie-001
+      - curie
+      - canary-tts
+      - tts-1
+      - davinci
+      - gpt-3.5-turbo-1106
+      - gpt-3.5-turbo-0301
+      - dall-e-2
+      - gpt-3.5-turbo-16k-0613
+      - tts-1-1106
+      - dall-e-3
+      - gpt-3.5-turbo-instruct-0914
+      - gpt-3.5-turbo-instruct
+      - gpt-3.5-turbo-16k
+      type: string
+      description: |-
+        * `text-search-babbage-doc-001` - text-search-babbage-doc-001
+        * `gpt-4-vision-preview` - gpt-4-vision-preview
+        * `curie-search-query` - curie-search-query
+        * `text-search-babbage-query-001` - text-search-babbage-query-001
+        * `babbage` - babbage
+        * `babbage-search-query` - babbage-search-query
+        * `text-babbage-001` - text-babbage-001
+        * `text-similarity-davinci-001` - text-similarity-davinci-001
+        * `davinci-similarity` - davinci-similarity
+        * `code-davinci-edit-001` - code-davinci-edit-001
+        * `curie-similarity` - curie-similarity
+        * `babbage-search-document` - babbage-search-document
+        * `curie-instruct-beta` - curie-instruct-beta
+        * `text-search-ada-doc-001` - text-search-ada-doc-001
+        * `davinci-instruct-beta` - davinci-instruct-beta
+        * `text-similarity-babbage-001` - text-similarity-babbage-001
+        * `text-search-davinci-doc-001` - text-search-davinci-doc-001
+        * `gpt-4-0314` - gpt-4-0314
+        * `babbage-similarity` - babbage-similarity
+        * `text-embedding-ada-002` - text-embedding-ada-002
+        * `davinci-search-query` - davinci-search-query
+        * `text-similarity-curie-001` - text-similarity-curie-001
+        * `gpt-4` - gpt-4
+        * `text-davinci-001` - text-davinci-001
+        * `text-search-davinci-query-001` - text-search-davinci-query-001
+        * `ada-search-document` - ada-search-document
+        * `ada-code-search-code` - ada-code-search-code
+        * `babbage-002` - babbage-002
+        * `davinci-002` - davinci-002
+        * `davinci-search-document` - davinci-search-document
+        * `curie-search-document` - curie-search-document
+        * `babbage-code-search-code` - babbage-code-search-code
+        * `text-search-ada-query-001` - text-search-ada-query-001
+        * `code-search-ada-text-001` - code-search-ada-text-001
+        * `babbage-code-search-text` - babbage-code-search-text
+        * `code-search-babbage-code-001` - code-search-babbage-code-001
+        * `ada-search-query` - ada-search-query
+        * `gpt-4-1106-preview` - gpt-4-1106-preview
+        * `ada-code-search-text` - ada-code-search-text
+        * `tts-1-hd` - tts-1-hd
+        * `text-search-curie-query-001` - text-search-curie-query-001
+        * `text-davinci-002` - text-davinci-002
+        * `text-davinci-edit-001` - text-davinci-edit-001
+        * `code-search-babbage-text-001` - code-search-babbage-text-001
+        * `tts-1-hd-1106` - tts-1-hd-1106
+        * `ada` - ada
+        * `gpt-3.5-turbo-0613` - gpt-3.5-turbo-0613
+        * `text-ada-001` - text-ada-001
+        * `ada-similarity` - ada-similarity
+        * `code-search-ada-code-001` - code-search-ada-code-001
+        * `text-similarity-ada-001` - text-similarity-ada-001
+        * `gpt-4-0613` - gpt-4-0613
+        * `canary-whisper` - canary-whisper
+        * `gpt-3.5-turbo` - gpt-3.5-turbo
+        * `whisper-1` - whisper-1
+        * `text-search-curie-doc-001` - text-search-curie-doc-001
+        * `text-davinci-003` - text-davinci-003
+        * `text-curie-001` - text-curie-001
+        * `curie` - curie
+        * `canary-tts` - canary-tts
+        * `tts-1` - tts-1
+        * `davinci` - davinci
+        * `gpt-3.5-turbo-1106` - gpt-3.5-turbo-1106
+        * `gpt-3.5-turbo-0301` - gpt-3.5-turbo-0301
+        * `dall-e-2` - dall-e-2
+        * `gpt-3.5-turbo-16k-0613` - gpt-3.5-turbo-16k-0613
+        * `tts-1-1106` - tts-1-1106
+        * `dall-e-3` - dall-e-3
+        * `gpt-3.5-turbo-instruct-0914` - gpt-3.5-turbo-instruct-0914
+        * `gpt-3.5-turbo-instruct` - gpt-3.5-turbo-instruct
+        * `gpt-3.5-turbo-16k` - gpt-3.5-turbo-16k
+    NodeGraph:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        file_path:
+          type: string
+          readOnly: true
+        label:
+          type: string
+          maxLength: 70
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - file_path
+      - id
+      - label
+      - updated_at
+      - user
+    NullEnum:
+      enum:
+      - null
+    PaginatedChatOpenaiList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatOpenai'
+    PaginatedChatPromptTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatPromptTemplate'
+    PaginatedLLMServiceKeysList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LLMServiceKeys'
+    PaginatedNodeGraphList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeGraph'
+    PaginatedProcessedStoredDataList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessedStoredData'
+    PaginatedQueryChatModelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryChatModel'
+    PaginatedQueryVectorDBList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryVectorDB'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedChatOpenai:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        cache:
+          type: boolean
+          nullable: true
+          description: Whether to cache the response.
+        callback_manager:
+          nullable: true
+          description: Callback manager to add to the run trace.
+        callbacks:
+          nullable: true
+          description: Callbacks to add to the run trace.
+        default_headers:
+          nullable: true
+          description: Default headers for HTTP requests.
+        default_query:
+          nullable: true
+          description: Default query parameters for HTTP requests.
+        http_client:
+          type: string
+          nullable: true
+          description: Optional httpx.Client.
+        max_retries:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Maximum number of retries to make when generating.
+        max_tokens:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: Maximum number of tokens to generate.
+        metadata:
+          nullable: true
+          description: Metadata to add to the run trace.
+        model_kwargs:
+          nullable: true
+          description: Holds any model parameters valid for create call not explicitly
+            specified.
+        model_name:
+          nullable: true
+          description: |-
+            Model name to use.
+
+            * `text-search-babbage-doc-001` - text-search-babbage-doc-001
+            * `gpt-4-vision-preview` - gpt-4-vision-preview
+            * `curie-search-query` - curie-search-query
+            * `text-search-babbage-query-001` - text-search-babbage-query-001
+            * `babbage` - babbage
+            * `babbage-search-query` - babbage-search-query
+            * `text-babbage-001` - text-babbage-001
+            * `text-similarity-davinci-001` - text-similarity-davinci-001
+            * `davinci-similarity` - davinci-similarity
+            * `code-davinci-edit-001` - code-davinci-edit-001
+            * `curie-similarity` - curie-similarity
+            * `babbage-search-document` - babbage-search-document
+            * `curie-instruct-beta` - curie-instruct-beta
+            * `text-search-ada-doc-001` - text-search-ada-doc-001
+            * `davinci-instruct-beta` - davinci-instruct-beta
+            * `text-similarity-babbage-001` - text-similarity-babbage-001
+            * `text-search-davinci-doc-001` - text-search-davinci-doc-001
+            * `gpt-4-0314` - gpt-4-0314
+            * `babbage-similarity` - babbage-similarity
+            * `text-embedding-ada-002` - text-embedding-ada-002
+            * `davinci-search-query` - davinci-search-query
+            * `text-similarity-curie-001` - text-similarity-curie-001
+            * `gpt-4` - gpt-4
+            * `text-davinci-001` - text-davinci-001
+            * `text-search-davinci-query-001` - text-search-davinci-query-001
+            * `ada-search-document` - ada-search-document
+            * `ada-code-search-code` - ada-code-search-code
+            * `babbage-002` - babbage-002
+            * `davinci-002` - davinci-002
+            * `davinci-search-document` - davinci-search-document
+            * `curie-search-document` - curie-search-document
+            * `babbage-code-search-code` - babbage-code-search-code
+            * `text-search-ada-query-001` - text-search-ada-query-001
+            * `code-search-ada-text-001` - code-search-ada-text-001
+            * `babbage-code-search-text` - babbage-code-search-text
+            * `code-search-babbage-code-001` - code-search-babbage-code-001
+            * `ada-search-query` - ada-search-query
+            * `gpt-4-1106-preview` - gpt-4-1106-preview
+            * `ada-code-search-text` - ada-code-search-text
+            * `tts-1-hd` - tts-1-hd
+            * `text-search-curie-query-001` - text-search-curie-query-001
+            * `text-davinci-002` - text-davinci-002
+            * `text-davinci-edit-001` - text-davinci-edit-001
+            * `code-search-babbage-text-001` - code-search-babbage-text-001
+            * `tts-1-hd-1106` - tts-1-hd-1106
+            * `ada` - ada
+            * `gpt-3.5-turbo-0613` - gpt-3.5-turbo-0613
+            * `text-ada-001` - text-ada-001
+            * `ada-similarity` - ada-similarity
+            * `code-search-ada-code-001` - code-search-ada-code-001
+            * `text-similarity-ada-001` - text-similarity-ada-001
+            * `gpt-4-0613` - gpt-4-0613
+            * `canary-whisper` - canary-whisper
+            * `gpt-3.5-turbo` - gpt-3.5-turbo
+            * `whisper-1` - whisper-1
+            * `text-search-curie-doc-001` - text-search-curie-doc-001
+            * `text-davinci-003` - text-davinci-003
+            * `text-curie-001` - text-curie-001
+            * `curie` - curie
+            * `canary-tts` - canary-tts
+            * `tts-1` - tts-1
+            * `davinci` - davinci
+            * `gpt-3.5-turbo-1106` - gpt-3.5-turbo-1106
+            * `gpt-3.5-turbo-0301` - gpt-3.5-turbo-0301
+            * `dall-e-2` - dall-e-2
+            * `gpt-3.5-turbo-16k-0613` - gpt-3.5-turbo-16k-0613
+            * `tts-1-1106` - tts-1-1106
+            * `dall-e-3` - dall-e-3
+            * `gpt-3.5-turbo-instruct-0914` - gpt-3.5-turbo-instruct-0914
+            * `gpt-3.5-turbo-instruct` - gpt-3.5-turbo-instruct
+            * `gpt-3.5-turbo-16k` - gpt-3.5-turbo-16k
+          oneOf:
+          - $ref: '#/components/schemas/ModelNameEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        n:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          description: Number of chat completions to generate for each prompt.
+        openai_api_base:
+          type: string
+          nullable: true
+          description: Base URL path for API requests, leave blank if not using a
+            proxy or service emulator.
+          maxLength: 200
+        openai_api_key:
+          type: string
+          nullable: true
+          description: API key for OpenAI, automatically inferred from env var OPENAI_API_KEY
+            if not provided.
+          maxLength: 200
+        openai_organization:
+          type: string
+          nullable: true
+          description: Organization ID for OpenAI, automatically inferred from env
+            var OPENAI_ORG_ID if not provided.
+          maxLength: 200
+        openai_proxy:
+          type: string
+          nullable: true
+          description: Proxy settings for OpenAI API.
+          maxLength: 200
+        request_timeout:
+          type: number
+          format: double
+          nullable: true
+          description: Timeout for requests to OpenAI completion API. Can be float,
+            httpx.Timeout or None.
+        streaming:
+          type: boolean
+          description: Whether to stream the results or not.
+        tags:
+          nullable: true
+          description: Tags to add to the run trace.
+        temperature:
+          type: number
+          format: double
+          nullable: true
+          description: Sampling temperature to use.
+        tiktoken_model_name:
+          type: string
+          nullable: true
+          description: Model name to pass to tiktoken. Use a different model name
+            here in special cases.
+          maxLength: 100
+        verbose:
+          type: boolean
+          nullable: true
+          description: Whether to print out response text.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedChatPromptTemplate:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        system_prompt:
+          type: string
+          nullable: true
+          description: System message prompt template
+        human_prompt:
+          type: string
+          description: Human message prompt template.
+        document_prompt:
+          type: string
+          nullable: true
+          description: Human message prompt template.
+        ai_prompt:
+          type: string
+          nullable: true
+          description: "\tAI message prompt template."
+        ai_response:
+          type: string
+          nullable: true
+          description: "\tAI message response template."
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedNodeGraph:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          readOnly: true
+        file_path:
+          type: string
+          readOnly: true
+        label:
+          type: string
+          maxLength: 70
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedProcessedStoredData:
+      type: object
+      properties:
+        user:
+          type: integer
+          readOnly: true
+        file_path:
+          type: string
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        node_id:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+        chat_model:
+          type: string
+          readOnly: true
+    ProcessedStoredData:
+      type: object
+      properties:
+        user:
+          type: integer
+          readOnly: true
+        file_path:
+          type: string
+          readOnly: true
+        file_name:
+          type: string
+          readOnly: true
+        node_id:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - file_name
+      - file_path
+      - updated_at
+      - user
+    QueryChatModel:
+      type: object
+      properties:
+        user:
+          type: string
+          readOnly: true
+        chat_model:
+          allOf:
+          - $ref: '#/components/schemas/ChatOpenai'
+          readOnly: true
+        chat_prompt:
+          allOf:
+          - $ref: '#/components/schemas/ChatPromptTemplate'
+          readOnly: true
+        api_key:
+          allOf:
+          - $ref: '#/components/schemas/LLMServiceKeys'
+          readOnly: true
+        document_prompt:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - api_key
+      - chat_model
+      - chat_prompt
+      - created_at
+      - updated_at
+      - user
+    QueryVectorDB:
+      type: object
+      properties:
+        user:
+          type: integer
+          readOnly: true
+        document_location:
+          type: string
+          readOnly: true
+        embedding_function:
+          type: string
+        node_id:
+          type: string
+        document_urls:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        document:
+          type: string
+          readOnly: true
+        n_results:
+          type: integer
+          maximum: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - document
+      - document_location
+      - document_urls
+      - updated_at
+      - user
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+        chat_model:
+          type: string
+          readOnly: true
+      required:
+      - chat_model
+      - id
+      - password
+      - username
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+servers:
+- url: https://localhost/

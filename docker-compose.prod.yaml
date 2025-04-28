@@ -1,0 +1,96 @@
+services:
+  data-studio-ui:
+    container_name: data-studio-ui
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    restart: always
+    expose:
+      - 3000
+    networks:
+      - shared-network
+  data-studio-api:
+    container_name: data-studio-api
+    build:
+      context: ./backend
+      dockerfile: ./docker/dev.Dockerfile
+    entrypoint: /app/docker/server-entrypoint.sh
+    env_file: .env
+    expose:
+      - 8000
+    depends_on:
+      - data-studio-redis
+      - db
+    restart: always
+    networks:
+      - shared-network
+
+  data-studio-celery-worker:
+    container_name: data-studio-celery-worker
+    build:
+      context: ./backend
+      dockerfile: ./docker/dev.Dockerfile
+    entrypoint: /app/docker/celery-entrypoint.sh
+    env_file: .env
+    restart: always
+    expose:
+      - 5555
+    depends_on:
+      - data-studio-api
+      - data-studio-redis
+      - db
+    networks:
+      - shared-network
+
+  data-studio-redis:
+    container_name: data-studio-redis
+    restart: always
+    image: redis:7.2-alpine
+    expose:
+      - 6379
+    networks:
+      - shared-network
+
+  nginx:
+    build:
+      context: ./backend
+      dockerfile: ./docker/nginx/nginx.Dockerfile
+    volumes:
+      - ./backend/certs:/etc/ssl/certs/:ro
+    env_file: .env
+    ports:
+      - 443:443
+    networks:
+      - shared-network
+    restart: always
+    depends_on:
+      - data-studio-api
+      - data-studio-celery-worker
+
+  db:
+    image: postgres:15.5-alpine3.19
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+      - PGSSLCERT=${PGSSLCERT}
+    networks:
+      - shared-network
+
+
+
+volumes:
+  db_data:
+    name: db_data
+    driver: local
+
+networks:
+  # data-studio-network:
+  #   name: data-studio-network
+  #   driver: bridge
+  shared-network:
+    name: shared-network
+    driver: bridge
+    external: true

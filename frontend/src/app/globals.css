@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /*   // kinda ok
+    --background: 250, 248, 245;
+    --foreground: 50, 61, 109;
+    --primary: 76, 164, 176;
+    --secondary: 164, 228, 235;
+    --accent: 255, 134, 92;
+    --border: 220, 220, 220;
+    --input: 220, 220, 220;
+    --muted: 240, 240, 240;
+    --popover: 245, 245, 245;
+    --destructive: 242, 108, 117;
+    --destructive-foreground: 255, 255, 255;
+    --card: 50, 61, 109;
+    --card-foreground:  250, 248, 245;
+    --popover-foreground: 50, 61, 109;
+    --primary-foreground: 255, 255, 255;
+    --secondary-foreground: 50, 61, 109;
+    --accent-foreground: 255, 255, 255;
+    --ring: 76, 164, 176;
+    --radius: 0.5rem;
+*/
+
+        /*
+  --background: 255, 255, 255;
+  --foreground: 1, 8, 22;
+  --card: 255, 255, 255;
+  --card-foreground: 1, 8, 22;
+  --popover: 255, 255, 255;
+  --popover-foreground: 1, 8, 22;
+  --primary: 36, 98, 234;
+  --primary-foreground: 247, 249, 251;
+  --secondary: 241, 245, 249;
+  --secondary-foreground: 15, 23, 42;
+  --muted: 241, 245, 249;
+  --muted-foreground: 100, 116, 139;
+  --accent: 241, 245, 249;
+  --accent-foreground: 15, 23, 42;
+  --destructive: 238, 68, 68;
+  --destructive-foreground: 247, 249, 251;
+  --border: 226, 232, 240;
+  --input: 226, 232, 240;
+  --ring: 36, 98, 234;
+  --radius: 0.5rem; /* Assuming this remains unchanged */
+
+        /* //  shadcn light mode white
+    --background: 255, 255, 255
+    --foreground: 8, 8, 10
+    --card: 255, 255, 255
+    --card-foreground: 8, 8, 10
+    --popover: 255, 255, 255
+    --popover-foreground: 8, 8, 10
+    --primary: 23, 23, 27
+    --primary-foreground: 249, 249, 249
+    --secondary: 244, 244, 245
+    --secondary-foreground: 23, 23, 27
+    --muted: 244, 244, 245
+    --muted-foreground: 113, 113, 122
+    --accent: 244, 244, 245
+    --accent-foreground: 23, 23, 27
+    --destructive: 238, 68, 68
+    --destructive-foreground: 249, 249, 249
+    --border: 227, 227, 231
+    --input: 227, 227, 231
+    --ring: 23, 23, 27
+*/
+
+        --background: 26, 35, 66;
+        --primary: 0, 168, 168;
+        --secondary: 26, 35, 66;
+        --accent: 36, 45, 76;
+        --foreground: 35, 46, 79;
+        --border: 35, 46, 79;
+        --popover: 26, 35, 66;
+        --destructive: 239 68 68;
+        --destructive-foreground: 250 250 250;
+        --muted: 36, 45, 76;
+        --muted-foreground: 115, 125, 165;
+        --radius: 0.5rem; /* Keeping border-radius consistent */
+        --card: 26, 35, 66; /* Light grey, distinguishable from the main background */
+        --card-foreground: 255, 255, 255; /* Dark color for text on light card background */
+        --popover-foreground: 255, 255, 255; /* Same as card-foreground for consistency */
+        --primary-foreground: 255, 255, 255; /* White text for contrast on primary elements */
+        --secondary-foreground: 85, 95, 125; /* Softer than the primary foreground for distinction */
+        --accent-foreground: 255, 255, 255; /* White to stand out against the accent color */
+        --input: 230, 230, 230; /* Light grey, stands out from the background but is still subdued */
+        --ring: 0, 168, 168; /* Teal, similar to primary color, for noticeable focus indication */
+    }
+
+    .dark {
+        --background: 26, 35, 66;
+        --primary: 0, 168, 168;
+        --secondary: 26, 35, 66;
+        --accent: 36, 45, 76;
+        --foreground: 35, 46, 79;
+        --border: 35, 46, 79;
+        --popover: 26, 35, 66;
+        --destructive: 239 68 68;
+        --destructive-foreground: 250 250 250;
+        --muted: 36, 45, 76;
+        --muted-foreground: 115, 125, 165;
+        --radius: 0.5rem; /* Keeping border-radius consistent */
+        --card: 26, 35, 66; /* Light grey, distinguishable from the main background */
+        --card-foreground: 255, 255, 255; /* Dark color for text on light card background */
+        --popover-foreground: 255, 255, 255; /* Same as card-foreground for consistency */
+        --primary-foreground: 255, 255, 255; /* White text for contrast on primary elements */
+        --secondary-foreground: 85, 95, 125; /* Softer than the primary foreground for distinction */
+        --accent-foreground: 255, 255, 255; /* White to stand out against the accent color */
+        --input: 230, 230, 230; /* Light grey, stands out from the background but is still subdued */
+        --ring: 0, 168, 168; /* Teal, similar to primary color, for noticeable focus indication */
+
+        /* --ring: 0, 168, 168; */
+
+        /*
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 5.9% 10%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;  */
+    }
+}
+body {
+    background: rgb(var(--background));
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(var(--background-end-rgb));
+    /* background:rgb( 0, 168, 168,0.3); */
+
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    /* background: rgb(var(--primary)); */
+    background: linear-gradient(to top, transparent, rgb(0, 168, 168, 0.6))
+        rgb(0, 168, 168, 0.5);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--primary));
+}
+
+@layer base {
+    html,
+    body,
+    #root {
+        height: 100%;
+        scroll-behavior: smooth;
+    }
+}

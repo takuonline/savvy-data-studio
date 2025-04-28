@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "forceConsistentCasingInFileNames": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "src/components/custom/node-graph/initial-elements.tss",
+        "src/components/custom/node-graph/NodeGraph.jsx",
+        "src/components/custom/node-graph/CustomNode.jsx"
+    ],
+    "exclude": ["node_modules"]
+}
