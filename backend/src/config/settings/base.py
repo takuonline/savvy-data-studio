@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+from typing import Any
 
 from ..logging_utils import ColorStreamHandler
 
@@ -27,15 +28,20 @@ MEDIA_ROOT = "data"
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
+
+def parse_cors(v: Any) -> list[str] | str:
+    if isinstance(v, str) and not v.startswith("["):
+        return [i.strip() for i in v.split(",")]
+    elif isinstance(v, list | str):
+        return v
+    raise ValueError(v)
+
+CORS_ALLOWED_ORIGINS  = parse_cors(os.environ.get("BACKEND_CORS_ORIGINS"))
+ALLOWED_HOSTS = ["data-studio-api","data-studio-api:8000"] # container host required by OTEL
+
+
 DEBUG = os.environ.get("DEBUG", True)
-BACKEND_CORS_ORIGINS = []
-
-if os.environ.get("BACKEND_CORS_ORIGINS") is not None:
-    try:
-        BACKEND_CORS_ORIGINS += os.environ.get("BACKEND_CORS_ORIGINS").split(",")
-    except Exception:
-        print("Cant set BACKEND_CORS_ORIGINS, using default instead")
-
 
 # Application definition
 INSTALLED_APPS = [

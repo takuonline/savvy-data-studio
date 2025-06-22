@@ -23,7 +23,7 @@ class TracingMiddleware(MiddlewareMixin):
         span.set_attribute("http.user_agent", request.META.get('HTTP_USER_AGENT', ''))
         span.set_attribute("http.remote_addr", self.get_client_ip(request))
 
-        if request.user.is_authenticated:
+        if hasattr(request, 'user') and request.user.is_authenticated:
             span.set_attribute("user.id", str(request.user.id))
             span.set_attribute("user.username", request.user.username)
 

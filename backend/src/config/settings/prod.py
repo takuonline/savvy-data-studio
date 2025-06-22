@@ -20,10 +20,6 @@ DATABASES = {
     }
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "https://data-studio.takuonline.com",
-    f"https://{DOMAIN_NAME}",
-]
 
 CORS_ALLOW_CREDENTIALS = True
 
