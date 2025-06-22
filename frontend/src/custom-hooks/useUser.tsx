@@ -1,5 +1,4 @@
 import AuthenticationService from '@/services/AuthenticationService';
-import { api } from '@/services/http-common';
 import useSWR from 'swr';
 
 export function useUser() {
