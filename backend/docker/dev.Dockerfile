@@ -23,7 +23,7 @@ RUN  apt update && apt-get install gcc -y
 WORKDIR /app
 
 COPY ./src/requirements.txt /app/
-RUN --mount=type=cache,target=/root/.cache/pip uv pip install --no-input -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip uv pip install -r requirements.txt
 
 COPY ./src/ /app/src/
 COPY ./docker/ /app/docker/
