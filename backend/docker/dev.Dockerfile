@@ -23,7 +23,7 @@ RUN  apt update && apt-get install gcc -y
 WORKDIR /app
 
 COPY ./src/requirements.txt /app/
-RUN --mount=type=cache,target=/root/.cache/pip uv pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip uv pip install -r requirements.txt --system
 
 COPY ./src/ /app/src/
 COPY ./docker/ /app/docker/
@@ -31,7 +31,7 @@ COPY ./docker/ /app/docker/
 RUN if [ "$BUILD_ENV" = "development" ]; \
     then \
         echo "production env"; \
-        RUN --mount=type=cache,target=/root/.cache/pip uv pip install  jupyterlab jupyterlab-code-formatter isort black; \
+        RUN --mount=type=cache,target=/root/.cache/pip uv pip install  jupyterlab jupyterlab-code-formatter isort black --system; \
     else \
         echo "non-production env: $BUILD_ENV"; \
     fi

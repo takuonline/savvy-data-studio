@@ -25,7 +25,7 @@ COPY ./src/requirements.txt /app/
 
 # Install dependencies including dev dependencies
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
-RUN --mount=type=cache,target=/root/.cache/pip uv pip install  -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip uv pip install  -r requirements.txt --system
 
 
 
