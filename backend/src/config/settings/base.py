@@ -56,12 +56,15 @@ INSTALLED_APPS = [
     "oauth2_provider",
     "debug_toolbar",
     "channels",
+     'django_prometheus',
     # custom apps
     "node_graph",
     "data_processing",
 ]
 
 MIDDLEWARE = [
+        'django_prometheus.middleware.PrometheusBeforeMiddleware',
+
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -73,6 +76,8 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "core.utils.middleware.HealthCheckMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+        'django_prometheus.middleware.PrometheusAfterMiddleware',
+
 ]
 
 ROOT_URLCONF = "core.urls"
