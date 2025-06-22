@@ -22,11 +22,10 @@ RUN apt update &&  apt-get install gcc -y
 WORKDIR /app
 COPY ./src/requirements.txt /app/
 
-# RUN pip install --no-cache-dir --no-input -r  requirements.txt
 
 # Install dependencies including dev dependencies
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
-RUN --mount=type=cache,target=/root/.cache/pip uv pip install --no-input -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip uv pip install  -r requirements.txt
 
 
 
