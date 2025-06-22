@@ -88,3 +88,4 @@ networks:
     name: shared-network
     driver: bridge
     external: true
+

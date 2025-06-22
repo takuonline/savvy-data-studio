@@ -28,13 +28,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", True)
-ALLOWED_HOSTS = []
+BACKEND_CORS_ORIGINS = []
 
-if os.environ.get("ALLOWED_HOSTS") is not None:
+if os.environ.get("BACKEND_CORS_ORIGINS") is not None:
     try:
-        ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split(",")
+        BACKEND_CORS_ORIGINS += os.environ.get("BACKEND_CORS_ORIGINS").split(",")
     except Exception:
-        print("Cant set ALLOWED_HOSTS, using default instead")
+        print("Cant set BACKEND_CORS_ORIGINS, using default instead")
 
 
 # Application definition
@@ -56,17 +56,17 @@ INSTALLED_APPS = [
     "oauth2_provider",
     "debug_toolbar",
     "channels",
-     'django_prometheus',
+    "django_prometheus",
     # custom apps
     "node_graph",
     "data_processing",
 ]
 
 MIDDLEWARE = [
-        'django_prometheus.middleware.PrometheusBeforeMiddleware',
-
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'core.middleware.tracing.TracingMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -76,8 +76,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "core.utils.middleware.HealthCheckMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-        'django_prometheus.middleware.PrometheusAfterMiddleware',
-
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"

@@ -1,6 +1,10 @@
 from .base import *
+from .tracing import configure_tracing
+import os
 
 DEBUG = False
+
+configure_tracing()
 
 
 DATABASES = {
@@ -24,18 +28,16 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
-
-
 
 
 # SSL Settings
@@ -44,9 +46,7 @@ SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_DOMAIN = DOMAIN_NAME
 SECURE_HSTS_SECONDS = 7776000
 CSRF_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = [f"https://{DOMAIN_NAME}",
-                        "https://data-studio.takuonline.com"
-                        ]
+CSRF_TRUSTED_ORIGINS = [f"https://{DOMAIN_NAME}", "https://data-studio.takuonline.com"]
 
 # https://stackoverflow.com/questions/62047354/build-absolute-uri-with-https-behind-reverse-proxy
 USE_X_FORWARDED_HOST = True
