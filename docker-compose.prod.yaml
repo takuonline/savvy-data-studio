@@ -1,4 +1,14 @@
 services:
+  data-studio-ui:
+    container_name: data-studio-ui
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    restart: always
+    expose:
+      - 3000
+    networks:
+      - shared-network
 
   data-studio-api:
     container_name: data-studio-api
@@ -77,7 +87,6 @@ services:
       - shared-network
     depends_on:
       - data-studio-redis
-
 
 volumes:
   data-studio-db-data:

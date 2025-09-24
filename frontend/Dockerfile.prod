@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:23.11-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -11,16 +11,13 @@ COPY src ./src
 COPY public ./public
 COPY package.json  package-lock.json* pnpm-lock.yaml* ./
 
-
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install  --frozen-lockfile
-
 FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
 FROM base
-COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/.next /app/.next
-EXPOSE 8000
+EXPOSE 3000
+
 CMD [ "pnpm", "start" ]
