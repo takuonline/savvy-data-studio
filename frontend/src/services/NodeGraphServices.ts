@@ -159,20 +159,7 @@ const loadSavedNodeGraphs = async () => {
     }
 };
 
-// const setOpenAiInfo = async (settings: {
-//   openaiApiKey: string;
-//   organizationName?: string;
-//   organizationId?: string;
-//   openaiTimeout?: string;
-// }) => {
-//   const config = {
-//     headers: {
-//       accept: "application/json",
-//     },
-//   };
 
-//   return await api.post("/v1/node-graph/node-graphs/", settings, config);
-// };
 
 const listUserApiKeys = async () => {
     const config = {

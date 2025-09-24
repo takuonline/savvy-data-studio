@@ -3,6 +3,13 @@ import os
 import openai
 
 
+ALLOWED_HOSTS += [
+
+    "localhost",
+    "127.0.0.1",
+]  # container host required by OTEL
+
+
 # used by django toolbar
 INTERNAL_IPS = [
     # ...

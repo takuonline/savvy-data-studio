@@ -1,4 +1,4 @@
-FROM nginx:1.25
+FROM nginx:1.29-alpine
 
 RUN mkdir -p /app
 

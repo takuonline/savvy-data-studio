@@ -18,15 +18,15 @@ function LogItem(props: { logItem: { title: string; descriptions: string } }) {
                 {logItem.descriptions}
             </p>
 
-            <div className="absolute  -right-7 top-0 flex  h-full flex-col justify-around gap-y-2">
-                <div className=" relative h-full text-primary  ">
+            <div className="absolute  -right-7 top-0 flex h-full flex-col justify-around gap-y-2">
+                <div className="relative h-full text-primary">
                     <div className="absolute h-full w-full rounded bg-primary opacity-10 "></div>
                     <PencilIcon className="h-full w-6 p-1 text-primary" />
                 </div>
 
-                <div className="  relative h-full text-accent  ">
-                    <div className="absolute h-full w-full rounded bg-accent opacity-10 "></div>
-                    <Trash2Icon className=" h-full w-6 p-1  " />
+                <div className="relative h-full text-accent">
+                    <div className="absolute h-full w-full rounded bg-primary opacity-10 "></div>
+                    <Trash2Icon className=" h-full w-6 p-1 text-destructive " />
                 </div>
             </div>
         </div>

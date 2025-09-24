@@ -8,7 +8,6 @@ import {
     setNodeState,
 } from '@/features/nodeGraphState/nodeGraphSlice';
 import { chatModelConfigDefault } from '@/features/nodeGraphState/state-defaults';
-import NodeGraphServices from '@/services/NodeGraphServices';
 import { ChatModelPrompt } from '@/types/graphExecutionTypes';
 import {
     ChatModelNodeData,
@@ -18,8 +17,8 @@ import {
     TextInputNodeData,
     TextOutputNodeData,
 } from '@/types/nodeGraphTypes';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Edge, Node, useReactFlow } from 'reactflow';
+import { useCallback, useEffect,  } from 'react';
+import  { Node, useReactFlow } from 'reactflow';
 
 import useStreamResponse from './useStreamResponse';
 
@@ -76,41 +75,6 @@ const useExecuteChatModelNode = () => {
         [openaiKeyId],
     );
 
-    // const sendRequest = useCallback(
-    //     async (request: ChatModelPrompt, data: ChatModelNodeData) => {
-    //         const queryData = prepareRequest(request, data);
-
-    //         if (!queryData) {
-    //             return;
-    //         }
-
-    //         const response = await NodeGraphServices.executeNodeGraph({
-    //             queryData,
-    //         });
-
-    //         if (isAxiosError(response)) {
-    //             if (response.message) {
-    //                 toast({
-    //                     title: 'Error ',
-    //                     description: response.message,
-    //                     className: ' text-red-500',
-    //                 });
-
-    //                 return;
-    //             } else {
-    //                 toast({
-    //                     title: 'Error ',
-    //                     description:
-    //                         'An error occured while executing the graph',
-    //                     className: ' text-red-500',
-    //                 });
-    //             }
-    //         }
-
-    //         return response;
-    //     },
-    //     [prepareRequest],
-    // );
 
     const executeChatModelNode = useCallback(
         async (chatModelNode: Node<ChatModelNodeData>) => {
@@ -373,16 +337,9 @@ const useExecuteChatModelNode = () => {
                 setExecution({ isExecuting: true, nodeId: chatModelNode.id }),
             );
 
-            //// STream response
 
             console.log(`==== Running node ${chatModelNode.id}  ==== `);
 
-            // dispatch(
-            //     setNodeState({
-            //         nodeId:  chatModelNode.id,
-            //         nodeState: ExecutionState.executing,
-            //     }),
-            // );
 
             const newChatState = {
                 nodeId: chatModelNode.id,
@@ -392,45 +349,6 @@ const useExecuteChatModelNode = () => {
 
             return await triggerStreaming(newChatState);
 
-            // await setChatStateAsync(newChatState)
-            //     .then((response) => {
-            //         console.log('Chat Model Node Executed');
-            //         return response
-            //     })
-            //     .catch((error) => {
-            //         console.log('Chat Model Node Error');
-            //         console.log(error);
-            //         return ExecutionState.error;
-            //     });
-
-            //  /////////////////////////////////////   sendRequest    /////////////////////////////////////
-
-            // const response = await sendRequest(request, chatModelNode.data);
-
-            // if (!response) {
-            //     dispatch(
-            //         setNodeState({
-            //             nodeId: chatModelNode.id,
-            //             nodeState: ExecutionState.error,
-            //         }),
-            //     );
-            //     return ExecutionState.error;
-            // }
-            // // ////////////////////////////////////  update output node    /////////////////////////////////////
-
-            // updateTextOutputNode(
-            //     chatModelNode.id,
-            //     (response as AxiosResponse).data,
-            // );
-
-            // dispatch(
-            //     setNodeState({
-            //         nodeId: chatModelNode.id,
-            //         nodeState: ExecutionState.success,
-            //     }),
-            // );
-
-            // return ExecutionState.success;
         },
         [
             dispatch,

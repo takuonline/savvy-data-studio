@@ -12,9 +12,6 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 import logging
 from django.conf import settings
 from django.middleware import csrf
-from django.contrib.auth.models import User
-# from drf_spectacular.extensions import OpenApiAuthenticationExtension
-# from drf_spectacular.utils import OpenApiSecurityRequirement, OpenApiSecurityScheme
 
 logger = logging.getLogger(__name__)
 
@@ -45,20 +42,19 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
             logger.error(e)
             raise InvalidToken(e.args[0])
 
-        # user = User.objects.get(username=serializer.user.username)
 
         user = serializer.user
 
         refresh = RefreshToken.for_user(user)
 
-        response = Response(serializer.validated_data, status=status.HTTP_200_OK)
+        response = Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         response.set_cookie(
             "ACCESS_TOKEN",
             max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"].total_seconds(),
             value=str(refresh.access_token),
             httponly=True,
             secure=True,
-            samesite="Lax",  # TODO: Change this to Lax
+            samesite="Lax",
             path="/",
         )
         response.set_cookie(
@@ -67,7 +63,7 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
             value=str(refresh),
             httponly=True,
             secure=True,
-            samesite="Lax",  # TODO: Change this to Lax
+            samesite="Lax",
             path="/",
         )
 

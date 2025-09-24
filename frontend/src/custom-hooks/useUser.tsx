@@ -4,7 +4,7 @@ import useSWR from 'swr';
 export function useUser() {
     const { data, error, isLoading } = useSWR(
         '/users/me/',
-        AuthenticationService.me,
+        ()=> AuthenticationService.me(),
     );
 
     return {

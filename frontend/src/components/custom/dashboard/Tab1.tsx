@@ -44,19 +44,13 @@ export default function Tab1(props: { value: string }) {
         },
 
         {
-            metricTitle: 'New Customers',
+            metricTitle: 'New CustomersX',
             metricValue: '1 243',
             additionalMetric: -5,
             additionalMetricDescription: ' from last quarter',
             icon: <UserPlusIcon className={iconStyle} />,
         },
-        // {
-        //   metricTitle: "Operational Costs",
-        //   metricValue: "$63,200.00",
-        //   additionalMetric: -9,
-        //   additionalMetricDescription: " since last year",
-        //   icon: <CalculatorIcon className={iconStyle} />,
-        // },
+
     ];
     return (
         <TabsContent value={props.value} className="px-5  ">

@@ -100,15 +100,8 @@ export default function DataGrid() {
     });
 
     return (
-        <div className="space-y-4 p-6 ">
-            {/* <div>
-        <DebouncedInput
-          value={globalFilter ?? ''}
-          onChange={value => setGlobalFilter(String(value))}
-          className="w-full"
-          placeholder="Search all columns..."
-        />
-      </div> */}
+        <div className="space-y-4 p-6 min-h-[calc(100vh-4rem)]">
+
             <div className="rounded-md border border-white/5 ">
                 <Table>
                     <TableHeader className="bg-black/10 ">
@@ -254,38 +247,5 @@ export default function DataGrid() {
                 </div>
             </div>
         </div>
-    );
-}
-
-function DebouncedInput({
-    value: initialValue,
-    onChange,
-    debounce = 500,
-    ...props
-}: {
-    value: string | number;
-    onChange: (value: string | number) => void;
-    debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-    const [value, setValue] = React.useState(initialValue);
-
-    React.useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
-
-    React.useEffect(() => {
-        const timeout = setTimeout(() => {
-            onChange(value);
-        }, debounce);
-
-        return () => clearTimeout(timeout);
-    }, [value]);
-
-    return (
-        <Input
-            {...props}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-        />
     );
 }

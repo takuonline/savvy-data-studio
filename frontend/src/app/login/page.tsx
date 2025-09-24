@@ -1,10 +1,30 @@
 import LoginForm from '@/components/custom/LoginForm';
-import React from 'react';
+import AuthenticationService from '@/services/AuthenticationService';
+import { redirect } from 'next/navigation';
 
-export default function Login() {
+export default async function LoginPage({
+    params,
+}: {
+    params: { error: string };
+}) {
+    const { error } = await params;
+    let user = null;
+
+    try {
+        user = await AuthenticationService.me();
+    } catch (error) {
+        // Log error server-side (consider using a proper logging service)
+        console.error('Authentication error:', error);
+    }
+
+    // Redirect after the try/catch block
+    if (user) {
+        redirect('/admin/dashboard');
+    }
+
     return (
         <div className="flex h-full items-center justify-center">
-            <LoginForm />
+            <LoginForm error={error} />
         </div>
     );
 }

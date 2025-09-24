@@ -17,10 +17,7 @@ module.exports = {
             },
         },
         extend: {
-            // backgroundImage: {
-            // 	"gradient-radial":
-            // 		"radial-gradient(50% 50% at 50% 50%, var(--tw-gradient-stops))",
-            // },
+
             colors: {
                 border: 'rgb(var(--border))',
                 input: 'rgb(var(--input))',

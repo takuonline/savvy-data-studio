@@ -15,8 +15,7 @@ import * as defaultStyles from './style-defaults';
 
 export const chatModelConfigDefault: ChatOpenAIConfiguration = {
     cache: false,
-    // callbackManager: null, // Replace with actual default value if available
-    // callbacks: null, // Replace with actual default value if available
+
     defaultHeaders: {},
     defaultQuery: {},
     httpClient: null, // Replace with actual default value if available

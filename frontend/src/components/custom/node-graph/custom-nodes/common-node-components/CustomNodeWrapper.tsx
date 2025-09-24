@@ -3,7 +3,7 @@ import { RootState } from '@/app/store';
 import { ExecutionState } from '@/components/enums/Enums';
 import Config from '@/lib/constants';
 import React from 'react';
-import { Handle, NodeResizeControl, Position } from 'reactflow';
+import {   NodeResizeControl,  } from 'reactflow';
 
 const controlStyle = {
     background: 'transparent',

@@ -1,186 +1,44 @@
 'use client';
 
-import AuthUiWrapper from '@/components/custom/AuthUiWrapper';
 import LoadingSpinner from '@/components/custom/LoadingSpinner';
-import { ShowPasswordComponent } from '@/components/custom/ShowPasswordComponent';
 import { Button } from '@/components/ui/button';
-import { CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 import AuthenticationService from '@/services/AuthenticationService';
 import { AuthLoginCredentials } from '@/types/authTypes';
-import { ErrorMessage } from '@hookform/error-message';
 import { isAxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 
-// export default function LoginForm() {
-//     const router = useRouter();
-//     const [errorMessage, setErrorMessage] = React.useState<string>('');
-//     const [showPassword, setShowPassword] = React.useState<boolean>(false);
-//     const {
-//         register,
-//         handleSubmit,
+import { CardFooter } from '../ui/card';
 
-//         formState: { errors, isSubmitting },
-//     } = useForm();
-
-//     const onSubmit: SubmitHandler<FieldValues> = async (d) => {
-//         setErrorMessage('');
-
-//         try {
-//             const response = await AuthenticationService.login(
-//                 d as AuthLoginCredentials,
-//             );
-
-//             router.push('/admin/dashboard');
-//         } catch (error) {
-//             console.log(error);
-
-//             if (isAxiosError(error) && error.response) {
-//                 toast.error(error.message);
-//                 setErrorMessage(error.message);
-
-//                 if (error.response.status == 401) {
-//                     setErrorMessage('Invalid username or password');
-//                     toast.error('Invalid username or password');
-//                 }
-//             } else {
-//                 toast.error('Error connecting to server');
-//             }
-//         }
-//     };
-
-//     const handleShowPassword = () => {
-//         setShowPassword((oldState) => !oldState);
-//     };
-
-//     return (
-//         <AuthUiWrapper
-//             title={'Login to your account'}
-//             className=" w-4/12 "
-//         >
-//             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 px-5">
-//                 <div className="">
-//                     <Input
-//                         type="text"
-//                         placeholder="Username"
-//                         {...register('username', {
-//                             required: 'This field is required',
-//                             maxLength: {
-//                                 value: 70,
-//                                 message:
-//                                     'You have exceeded the max length of this field of 70',
-//                             },
-//                         })}
-//                     />
-
-//                     <div className="text-xs text-red-600 ">
-//                         <ErrorMessage errors={errors} name="username" />
-//                     </div>
-//                 </div>
-
-//                 <div className="">
-//                     <div className="relative flex w-full items-center justify-center">
-//                         <Input
-//                             id="password"
-//                             type={showPassword ? 'text' : 'password'}
-//                             placeholder="Password"
-//                             {...register('password', {
-//                                 required: 'This field is required',
-//                                 maxLength: {
-//                                     value: 70,
-//                                     message:
-//                                         'You have exceeded the max length of this field of 70',
-//                                 },
-//                             })}
-//                         />
-
-//                         <ShowPasswordComponent
-//                             showText={showPassword}
-//                             handleShowText={handleShowPassword}
-//                             className="    "
-//                         />
-//                     </div>
-//                     {errors.password && (
-//                         <div className="text-xs text-red-600">
-//                             <ErrorMessage errors={errors} name="password" />
-//                         </div>
-//                     )}
-//                 </div>
-
-//                 <Button
-//                     type="submit"
-//                     className="w-full rounded bg-primary "
-//                     variant="ghost"
-//                     disabled={isSubmitting}
-//                 >
-//                     {isSubmitting ? <LoadingSpinner /> : 'Login'}
-//                 </Button>
-
-//                 {errorMessage && (
-//                     <p className=" mb-2 text-center text-sm text-red-600 ">
-//                         {errorMessage}
-//                     </p>
-//                 )}
-//             </form>
-
-//             {/* {isSubmitting && (
-//         <p className="text-primary text-center py-4">
-//           {" "}
-//           <LoadingSpinner /> Loading...
-//         </p>
-//       )} */}
-
-//             <div className="flex items-center justify-center text-xs ">
-//                 <p className="opacity-50 ">{'Don’t have an account?  '}</p>
-//                 <Link
-//                     href="/create-account"
-//                     className="p-1 font-bold text-primary "
-//                 >
-//                     {' '}
-//                     {'Create account'}
-//                 </Link>
-//             </div>
-//         </AuthUiWrapper>
-//     );
-// }
-
-export default function LoginForm() {
+export default function LoginForm({ error }: { error?: string }) {
     const router = useRouter();
     const [errorMessage, setErrorMessage] = React.useState<string>('');
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
-    const { register, handleSubmit, formState } = useForm();
+    const { register, handleSubmit, formState, } = useForm();
 
-    React.useEffect(() => {
-        setIsSubmitting(formState.isSubmitting);
-    }, [formState.isSubmitting]);
 
     const onSubmit: SubmitHandler<FieldValues> = async (d) => {
         setErrorMessage('');
 
         try {
-            const response = await AuthenticationService.login(
-                d as AuthLoginCredentials,
-            );
-
+            await AuthenticationService.login(d as AuthLoginCredentials);
             router.push('/admin/dashboard');
         } catch (error) {
             console.log(error);
 
             if (isAxiosError(error) && error.response) {
-                toast.error(error.message);
                 setErrorMessage(error.message);
 
                 if (error.response.status == 401) {
                     setErrorMessage('Invalid username or password');
-                    toast.error('Invalid username or password');
                 }
             } else {
-                toast.error('Error connecting to server');
+                setErrorMessage('Error connecting to server');
             }
         }
     };
@@ -188,19 +46,55 @@ export default function LoginForm() {
     const handleShowPassword = () => {
         setShowPassword((oldState) => !oldState);
     };
-
     return (
-        <AuthUiWrapper title={'Login'} className=" m-0 w-[32rem]">
-            <CardContent className="grid gap-4 ">
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-4 bg-transparent px-1 "
-                >
-                    <div className="">
+        <form
+            className={cn('m-0 flex w-[20rem] flex-col gap-6')}
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex flex-col items-center gap-2 text-center">
+                <h1 className="mx-4 text-2xl font-bold">Login</h1>
+            </div>
+            <div className="grid gap-6">
+                <div className="grid gap-3">
+                    <Label htmlFor="username">Username</Label>
+                    {/* <Input
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        className="border-border"
+                        {...register('email', {
+                            required: 'This field is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address',
+                            },
+                        })}
+                    /> */}
+
+                    <Input
+                        type="text"
+                        placeholder="Username"
+                        {...register('username', {
+                            required: 'This field is required',
+                            maxLength: {
+                                value: 70,
+                                message:
+                                    'You have exceeded the max length of this field of 70',
+                            },
+                        })}
+                    />
+                </div>
+                <div className="grid gap-3">
+                    <div className="flex items-center">
+                        <Label htmlFor="password">Password</Label>
+                    </div>
+                    <div className="relative">
                         <Input
-                            type="text"
-                            placeholder="Username"
-                            {...register('username', {
+                            id="password"
+                            className="border border-border"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Password"
+                            {...register('password', {
                                 required: 'This field is required',
                                 maxLength: {
                                     value: 70,
@@ -209,107 +103,80 @@ export default function LoginForm() {
                                 },
                             })}
                         />
-
-                        {/* <div className="text-destructive text-xs ">
-                <ErrorMessage formState.errors={formState.errors} name="username" />
-              </div> */}
-                    </div>
-
-                    <div className="">
-                        <div className="relative w-full ">
-                            <Input
-                                id="password"
-                                className="border border-border"
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="Password"
-                                {...register('password', {
-                                    required: 'This field is required',
-                                    maxLength: {
-                                        value: 70,
-                                        message:
-                                            'You have exceeded the max length of this field of 70',
-                                    },
-                                })}
-                            />
-
-                            <ShowPasswordComponent
-                                showPassword={showPassword}
-                                handleShowPassword={handleShowPassword}
-                            />
-                        </div>
-
-                        {formState.errors.password && (
-                            <div className="text-xs text-destructive">
-                                <>{formState.errors.password.message}</>
-                                {/* <ErrorMessage formState.errors={formState.errors} name="password" /> */}
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="space-y-4 pt-6">
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full rounded "
-                            variant={'default'}
+                        <button
+                            type="button"
+                            className="absolute right-3 top-1/2 -translate-y-1/2"
+                            onClick={handleShowPassword}
                         >
-                            {isSubmitting ? <LoadingSpinner /> : 'Login'}
-                        </Button>
-
-                        <div className="flex gap-2">
-                            {/* <Button
-                  type="button"
-                  disabled={isSubmitting}
-                  className="w-full rounded bg-white/10 border-white/30"
-                  variant="outline"
-                  onClick={() => {
-                    setIsSubmitting(true);
-                    router.push(`${constants.API_BASE_URL}/googleauth/login/`);
-                  }}
-                >
-                  {isSubmitting ? (
-                    <LoadingSpinner />
-                  ) : (
-                    <>
-                      <IconGoogle className={"mr-3 size-4"} />
-                      <p>{"Google"}</p>
-                    </>
-                  )}
-                </Button> */}
-                            {/* <Button
-                  type="button"
-                  disabled={isSubmitting}
-                  className="w-full rounded  "
-                  variant="outline"
-                  onClick={() => handleSocialAuth('github')}
-                >
-                  <IconGitHub className={'mr-3 size-4'} />
-                  {'Github'}
-                </Button> */}
-                            {/* <Button
-                  type="button"
-                  disabled={isSubmitting}
-                  className="w-full rounded  "
-                  variant="outline"
-                  onClick={() => handleSocialAuth('linkedin',true)}
-                >
-                  <IconLinkedIn className={'mr-3 size-4'} />
-                  {'LinkedIn'}
-                </Button> */}
-                        </div>
-
-                        {errorMessage && (
-                            <p className=" mb-2 text-center text-sm text-destructive ">
-                                {errorMessage}
-                            </p>
-                        )}
+                            {showPassword ? (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                                    <line x1="2" x2="22" y1="2" y2="22"></line>
+                                </svg>
+                            ) : (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            )}
+                        </button>
                     </div>
-                </form>
-            </CardContent>
+                    {formState.errors.password && (
+                        <div className="text-xs text-destructive">
+                            <div>
+                                {formState.errors.password.message?.toString() ||
+                                    'Invalid password'}
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <Button
+                    type="submit"
+                    className="w-full rounded hover:bg-muted"
+                    disabled={formState.isSubmitting}
+                >
+                    {formState.isSubmitting ? <LoadingSpinner /> : 'Login'}
+                </Button>
+            </div>
+            {errorMessage && (
+                <p className="text-center text-sm text-destructive">
+                    {errorMessage}
+                </p>
+            )}
 
-            <CardFooter className="mb-5 flex justify-center">
+            {errorMessage && (
+                <p className="text-center text-sm text-destructive">
+                    {
+                        'Please try another login method or contact support at team@clipbard.com'
+                    }
+                </p>
+            )}
+
+            <CardFooter className="mb-5 flex justify-center p-0">
                 <p className="text-sm text-white/50">
-                    {"Don't have an account?"}{' '}
+                    {"Don't have an account? "}{' '}
                     <Link
                         href="/signup"
                         className="font-bold text-primary opacity-100"
@@ -318,6 +185,7 @@ export default function LoginForm() {
                     </Link>
                 </p>
             </CardFooter>
-        </AuthUiWrapper>
+        </form>
     );
+
 }

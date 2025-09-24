@@ -129,8 +129,7 @@ export type NodeGraphState = {
 
 export type ChatOpenAIConfiguration = {
     cache?: boolean;
-    // callbackManager?: BaseCallbackManager;
-    // callbacks?: Callbacks;
+
     defaultHeaders?: Record<string, string>;
     defaultQuery?: Record<string, any>;
     httpClient?: any; // Replace 'any' with the specific type if available

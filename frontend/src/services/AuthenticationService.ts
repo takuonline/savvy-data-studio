@@ -1,5 +1,4 @@
 import { AuthLoginCredentials } from '@/types/authTypes';
-import { AxiosError } from 'axios';
 
 import { api } from './http-common';
 
@@ -27,24 +26,15 @@ const verify = async () => {
     return response;
 };
 
-const me = async (url: string) => {
-    return await api.get(url);
+const me = async () => {
+    return await api.get('/users/me/');
 };
 
-const checkAuth = async (url: string) => {
-    return await api.get(url, {
-        headers: {
-            // 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        withCredentials: true,
-    });
-};
 const AuthenticationService = {
     login,
     signUp,
     refresh,
     verify,
-    checkAuth,
     me,
 };
 

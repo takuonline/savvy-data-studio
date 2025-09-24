@@ -1,6 +1,6 @@
 import * as utils from '@/app/utils/utils';
 import { AVAILABLE_NODES } from '@/features/nodeGraphState/state-defaults';
-import { ContextMenuPosition, NodeDataType } from '@/types/nodeGraphTypes';
+import {  NodeDataType } from '@/types/nodeGraphTypes';
 import { Edge, Node, XYPosition } from 'reactflow';
 
 import handleIds from './handle-ids';

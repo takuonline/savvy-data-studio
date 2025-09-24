@@ -22,11 +22,11 @@ export default function MetricCard(props: { metricItem: MetricItem }) {
 
     const isNegativeNumber = additionalMetric ? additionalMetric < 0 : false;
     const dynamicStyle = isNegativeNumber
-        ? `bg-[color:rgb(var(--accent),.1)]  text-accent `
+        ? `bg-[color:rgb(var(--primary),.1)]  text-destructive `
         : `bg-[color:rgb(var(--primary),.1)]  text-primary `;
 
     return (
-        <Card className=" flex w-[22rem] rounded-2xl px-2 py-7 ">
+        <Card className=" flex w-[22rem] rounded-2xl px-2 py-7 h-[10rem]">
             <div className=" flex w-4/12 items-center justify-center">
                 {icon}
             </div>

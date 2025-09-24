@@ -71,7 +71,9 @@ api.interceptors.response.use(
     async (error) => {
         switch (error.response?.status) {
             case 401:
-                window.location.href = `/login`; // Redirect to login
+                if (window.location.pathname !== '/login') {
+                    window.location.href = `/login`;
+                }
 
                 break;
             case 403:
@@ -84,10 +86,15 @@ api.interceptors.response.use(
             case 404:
                 break;
             default:
-                toast(
+                const errMsg =
                     error?.response?.data?.message ||
-                        'Something went wrong. Try reloading your page and if the issue persists reach out to the analytic engineering teams. Thanks',
-                );
+                    'Something went wrong. Try reloading your page and if the issue persists reach out to the analytic engineering teams. Thanks';
+                console.log(errMsg);
+
+                if (typeof window !== 'undefined') {
+                    toast.error(errMsg);
+                }
+
                 break;
         }
         throw error;

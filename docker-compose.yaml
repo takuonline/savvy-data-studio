@@ -4,14 +4,19 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
+    environment:
+      - WATCHPACK_POLLING=true
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
+      # - ./frontend/.next
+      # - ./frontend/node_modules
     restart: always
     expose:
       - 3000
     networks:
       - shared-network
+
   data-studio-api:
     container_name: data-studio-api
     build:
@@ -89,18 +94,13 @@ services:
     networks:
       - shared-network
 
-
-
 volumes:
   db_data:
     name: db_data
     driver: local
 
 networks:
-  # data-studio-network:
-  #   name: data-studio-network
-  #   driver: bridge
   shared-network:
     name: shared-network
     driver: bridge
-    external: true
+    # external: true
