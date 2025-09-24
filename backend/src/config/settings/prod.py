@@ -6,6 +6,7 @@ DEBUG = False
 
 configure_tracing()
 
+ALLOWED_HOSTS += ["data-studio-api.takuonline.com", ]
 
 DATABASES = {
     "default": {
