@@ -38,7 +38,7 @@ function NodeSelect({
 
     return (
         <div className="textinput-node__select ">
-            <div>{selectionTitle + ':' ?? 'Select:'} </div>
+            <div>{`${selectionTitle ?? 'Select'}:`} </div>
             <select
                 className="nodrag h-full w-full bg-white bg-opacity-5 px-2 py-1"
                 onChange={onChange}

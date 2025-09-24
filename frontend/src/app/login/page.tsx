@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 export default async function LoginPage({
     params,
 }: {
-    params: { error: string };
+    params: Promise<{ error: string }>;
 }) {
     const { error } = await params;
     let user = null;
