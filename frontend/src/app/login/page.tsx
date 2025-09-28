@@ -23,7 +23,7 @@ export default async function LoginPage({
     }
 
     return (
-        <div className="flex h-full items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-muted">
             <LoginForm error={error} />
         </div>
     );

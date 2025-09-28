@@ -8,7 +8,7 @@ import useSWR from 'swr';
 import LoadingSpinner from './LoadingSpinner';
 
 function useUserAuth() {
-    const { data, error } = useSWR('verify', AuthenticationService.verify);
+    const { data, error } = useSWR('verify', AuthenticationService.verify, );
 
     const loading = !data && !error;
     const loggedOut = error && error.status === 403;

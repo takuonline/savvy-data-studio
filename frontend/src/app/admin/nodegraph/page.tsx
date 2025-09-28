@@ -16,8 +16,7 @@ import TextInputNode from '@/components/custom/node-graph/custom-nodes/TextInput
 import TextOutputNode from '@/components/custom/node-graph/custom-nodes/TextOutputNode';
 import VectorSearchNode from '@/components/custom/node-graph/custom-nodes/VectorSearchNode';
 import NodeEditingSheetGeneral from '@/components/custom/node-graph/node-editing-sheet/NodeEditingSheet';
-import withAuth from '@/components/custom/withAuth';
-import { Toaster } from '@/components/ui/toaster';
+
 import {
     setContextMenuClickPosition,
     setNodeGraphEditing,

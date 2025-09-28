@@ -1,6 +1,6 @@
 services:
   data-studio-ui:
-    container_name: data-studio-ui
+    container_name: ${PROJECT_NAME}-ui
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -9,8 +9,6 @@ services:
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
-      # - ./frontend/.next
-      # - ./frontend/node_modules
     restart: always
     expose:
       - 3000
@@ -18,7 +16,7 @@ services:
       - shared-network
 
   data-studio-api:
-    container_name: data-studio-api
+    container_name: ${PROJECT_NAME}-api
     build:
       context: ./backend
       dockerfile: ./docker/dev.Dockerfile
@@ -39,7 +37,7 @@ services:
       - shared-network
 
   data-studio-celery-worker:
-    container_name: data-studio-celery-worker
+    container_name: ${PROJECT_NAME}-celery-worker
     build:
       context: ./backend
       dockerfile: ./docker/dev.Dockerfile
@@ -58,7 +56,7 @@ services:
       - shared-network
 
   data-studio-redis:
-    container_name: data-studio-redis
+    container_name: ${PROJECT_NAME}-redis
     restart: always
     image: redis:7.2-alpine
     expose:
@@ -67,6 +65,7 @@ services:
       - shared-network
 
   nginx:
+    container_name: ${PROJECT_NAME}-nginx
     build:
       context: ./backend
       dockerfile: ./docker/nginx/nginx.Dockerfile
@@ -79,10 +78,11 @@ services:
       - shared-network
     restart: always
     depends_on:
-      - data-studio-api
-      - data-studio-celery-worker
+      - ${PROJECT_NAME}-api
+      - ${PROJECT_NAME}-celery-worker
 
   db:
+    container_name: ${PROJECT_NAME}-db
     image: postgres:15.5-alpine3.19
     volumes:
       - db_data:/var/lib/postgresql/data
