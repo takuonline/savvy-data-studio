@@ -1,6 +1,6 @@
 services:
   data-studio-ui:
-    container_name: data-studio-ui
+    container_name: ${PROJECT_NAME}-ui
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
@@ -11,7 +11,7 @@ services:
       - shared-network
 
   data-studio-api:
-    container_name: data-studio-api
+    container_name: ${PROJECT_NAME}-api
     build:
       context: ./backend
       dockerfile: ./docker/prod.Dockerfile
@@ -27,7 +27,7 @@ services:
       - shared-network
 
   data-studio-celery-worker:
-    container_name: data-studio-celery-worker
+    container_name: ${PROJECT_NAME}-celery-worker
     build:
       context: ./backend
       dockerfile: ./docker/prod.Dockerfile
@@ -44,7 +44,7 @@ services:
       - shared-network
 
   data-studio-redis:
-    container_name: data-studio-redis
+    container_name: ${PROJECT_NAME}-redis
     restart: always
     image: redis:7.2-alpine
     expose:
@@ -54,6 +54,7 @@ services:
 
 
   data-studio-db:
+    container_name: ${PROJECT_NAME}-db
     image: postgres:15.5-alpine3.19
     volumes:
       - data-studio-db-data:/var/lib/postgresql/data
@@ -65,13 +66,16 @@ services:
     networks:
       - shared-network
 
-
   postgres-exporter:
-    image: prometheuscommunity/postgres-exporter:v0.17.1
-    container_name: data-studio-postgres-exporter
+    image: prometheuscommunity/postgres-exporter:v0.18.0
+    container_name: ${PROJECT_NAME}-postgres-exporter
     restart: always
     environment:
-      DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}?sslmode=disable"
+      # DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}?sslmode=disable"
+      DATA_SOURCE_URI: "${PROJECT_NAME}-db:${DB_PORT}/${DB_NAME}?sslmode=disable"
+      DATA_SOURCE_USER: ${DB_USER}
+      DATA_SOURCE_PASS: ${DB_PASSWORD}
+      DATA_SOURCE_DB: ${DB_NAME}
     networks:
       - shared-network  # Same network as monitoring stack
     depends_on:
@@ -79,7 +83,7 @@ services:
 
   redis-exporter:
     image: oliver006/redis_exporter:v1.74.0-alpine
-    container_name: data-studio-redis-exporter
+    container_name: ${PROJECT_NAME}-redis-exporter
     restart: always
     environment:
       REDIS_ADDR: "redis:6379"
