@@ -1,6 +1,5 @@
 # Data Studio: Reimagining the LLM Interface
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](docker-compose.yaml)
 [![Kubernetes](https://img.shields.io/badge/kubernetes-ready-326ce5.svg)](infra/)
 
@@ -9,8 +8,6 @@
 ## Demo
 
 https://github.com/user-attachments/assets/cf9d3a9f-14df-401d-91bf-24a3f76de0df
-
-
 
 ## 🌟 Project Overview
 
@@ -246,7 +243,7 @@ helm install data-studio . --namespace data-studio --create-namespace
 kubectl apply -f templates/
 ```
 
-### Local Development Setup
+### Local Development Setup(not tested, please use docker)
 
 #### Frontend Development
 ```bash
@@ -311,7 +308,7 @@ PRODUCTION_HOST=your-domain.com
 ### Creating Node Graphs
 
 1. **Access the Node Graph Interface**
-   - Navigate to `/admin/nodegraph` after logging in
+   - Navigate to `/admin` after logging in
    - Right-click on the canvas to add nodes
 
 2. **Available Node Types**
@@ -329,26 +326,6 @@ PRODUCTION_HOST=your-domain.com
    - Click the execution button to run the entire graph
    - Monitor real-time progress and streaming responses
 
-### WebSocket Communication
-
-The system uses WebSockets for real-time communication:
-
-```javascript
-// Frontend WebSocket connection
-const ws = new WebSocket(`wss://localhost/ws/conversation/${conversationId}/?oaid=${apiKeyId}`);
-```
-
-### API Integration
-
-```python
-# Backend API example
-from node_graph.models import NodeGraph
-from node_graph.services import simple_chat
-
-# Execute a saved node graph
-node_graph = NodeGraph.objects.get(id=graph_id)
-result = simple_chat.execute_graph(node_graph)
-```
 
 ## 📊 Monitoring & Observability
 
@@ -366,39 +343,11 @@ result = simple_chat.execute_graph(node_graph)
 - Django Prometheus: Application metrics
 ```
 
-## 🔧 Development
-
-### Code Quality Tools
-```bash
-# Backend (Python)
-ruff check .              # Linting
-ruff format .             # Formatting
-pre-commit install        # Git hooks
-
-# Frontend (TypeScript)
-pnpm lint                 # ESLint
-pnpm format               # Prettier
-pnpm typecheck            # TypeScript
-```
-
-### Database Migrations
-```bash
-# Create migrations
-python manage.py makemigrations
-
-# Apply migrations
-python manage.py migrate
-
-# Create superuser
-python manage.py createsuperuser
-```
-
 ## 🚀 Deployment Strategies
 
 ### Development
 - Docker Compose with hot reload
 - Local development servers
-- SQLite for rapid prototyping
 
 ### Production
 - Kubernetes cluster deployment
@@ -406,15 +355,6 @@ python manage.py createsuperuser
 - Persistent volume claims
 - LoadBalancer services
 - Monitoring and alerting
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 
 
 ---
