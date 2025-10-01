@@ -55,7 +55,7 @@ def configure_tracing():
 
         # Instrument Django (only if tracing is working)
         DjangoInstrumentor().instrument(
-            excluded_urls="health,metrics,prometheus",  # Don't trace health checks
+            excluded_urls="metrics,health,prometheus,/api/v1/metrics,/health,/metrics",
         )
 
         # Instrument HTTP requests
