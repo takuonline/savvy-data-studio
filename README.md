@@ -16,25 +16,28 @@ Data Studio revolutionizes how we interact with Large Language Models by providi
 ## 🚀 Key Features
 
 ### 🔄 Graph-like Node Architecture
+
 - **Interactive Node Graph**: Visual workflow creation using React Flow
 - **Custom Node Types**: Text Input, Document Input, Chat Model, Vector Search, and Output nodes
 - **Real-time Execution**: Stream processing with live feedback
 - **Save/Load Workflows**: Persistent graph storage and template system
 
 ### 🔗 Real-time Communication
+
 - **WebSocket Streaming**: Live LLM response streaming via Django Channels
-- **JWT Authentication**: Secure WebSocket connections with custom middleware
+- **HTTP ONLY JWT Authentication**: A custom implementation of Http only jwt auth
 - **Multi-user Support**: User-isolated conversations and data processing
 
 ### 📄 Advanced Document Processing
+
 - **Multiple Formats**: Support for various document types via Unstructured
 - **Vector Search**: ChromaDB integration for semantic document search
 - **Chunked Processing**: Configurable document chunking with LangChain
 
 ### ⚡ High-Performance Infrastructure
+
 - **Containerized**: Full Docker & Docker Compose support
 - **Kubernetes Ready**: Helm charts and production deployments
-- **Monitoring**: Prometheus metrics and OpenTelemetry tracing
 - **Load Balancing**: Nginx reverse proxy with SSL support
 
 ## 🏗️ Architecture
@@ -142,33 +145,36 @@ savvy_data_studio/
 │   └── 📁 nginx/             # Nginx Ingress Configuration
 │
 ├── 📄 docker-compose.yaml    # Development Environment
-├── 📄 docker-compose.prod.yaml  # Production Environment
+├── 📄 docker-compose.prod.yaml  # Production Environment, no bind mounts,etc
 └── 📄 README.md              # This file
 ```
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 15.5.4 with React 19.1.1
+
+- **Framework**: Next.js
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **State Management**: Redux Toolkit
 - **UI Components**: Shadcn UI, Radix UI
-- **Graph Visualization**: React Flow 11.11.4
+- **Graph Visualization**: React Flow
 - **Package Manager**: pnpm
 
 ### Backend
-- **Framework**: Django 4.2.* with Django REST Framework 3.15.*
-- **Language**: Python 3.x
-- **Database**: PostgreSQL 15.5
-- **Cache/Message Broker**: Redis 7.2
-- **Task Queue**: Celery 5.4.0 with Flower monitoring
-- **WebSockets**: Django Channels 4.1.0 with Channels Redis
-- **LLM Integration**: OpenAI 1.76.0, LangChain 0.1.19
-- **Document Processing**: Unstructured 0.13.7, PyPDF 4.2.0
-- **Vector Database**: ChromaDB 0.5.0
+
+- **Framework**: Django with Django REST Framework
+- **Language**: Python
+- **Database**: PostgreSQL
+- **Cache/Message Broker**: Redis
+- **Task Queue**: Celery with Flower monitoring
+- **WebSockets**: Django Channels with Channels Redis
+- **LLM Integration**: OpenAI , LangChain
+- **Document Processing**: Unstructured , PyPDF
+- **Vector Database**: ChromaDB
 
 ### DevOps & Infrastructure
+
 - **Containerization**: Docker & Docker Compose
 - **Orchestration**: Kubernetes with Helm Charts
 - **Reverse Proxy**: Nginx with SSL/TLS
@@ -184,15 +190,17 @@ savvy_data_studio/
 - Git
 - (Optional) Node.js 18+ and Python 3.9+ for local development
 
-### Quick Start with Docker Compose
+### Quick Start with Docker Compose(Recommended)
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd savvy_data_studio
    ```
 
 2. **Set up environment variables**
+
    ```bash
    # Copy the sample environment file
    cp .env.sample .env
@@ -208,6 +216,7 @@ savvy_data_studio/
    ```
 
 3. **Start the development environment**
+
    ```bash
    # Build and start all services
    docker compose up --build
@@ -217,9 +226,8 @@ savvy_data_studio/
    ```
 
 4. **Access the application**
-   - Frontend: https://localhost:443
-   - API Documentation: https://localhost:443/api/docs/
-   - Celery Monitoring: http://localhost:5555
+   - Frontend: https://localhost
+   - API Documentation: https://localhost/api/docs/
 
 ### Production Deployment
 
@@ -246,6 +254,7 @@ kubectl apply -f templates/
 ### Local Development Setup(not tested, please use docker)
 
 #### Frontend Development
+
 ```bash
 cd frontend
 pnpm install
@@ -254,6 +263,7 @@ pnpm dev
 ```
 
 #### Backend Development
+
 ```bash
 cd backend/src
 pip install -r requirements.txt
@@ -308,10 +318,12 @@ PRODUCTION_HOST=your-domain.com
 ### Creating Node Graphs
 
 1. **Access the Node Graph Interface**
+
    - Navigate to `/admin` after logging in
    - Right-click on the canvas to add nodes
 
 2. **Available Node Types**
+
    - **Text Input**: Manual text input for prompts
    - **Document Input**: Upload and process documents
    - **Chat Model**: LLM interaction with configurable parameters
@@ -319,6 +331,7 @@ PRODUCTION_HOST=your-domain.com
    - **Text Output**: Display results and outputs
 
 3. **Connecting Nodes**
+
    - Drag from output handles to input handles
    - Data flows through connections during execution
 
@@ -326,16 +339,17 @@ PRODUCTION_HOST=your-domain.com
    - Click the execution button to run the entire graph
    - Monitor real-time progress and streaming responses
 
-
 ## 📊 Monitoring & Observability
 
 ### Built-in Monitoring
+
 - **Health Checks**: `/api/health/` endpoint
 - **Metrics**: Prometheus metrics at `/metrics`
 - **Tracing**: OpenTelemetry integration
 - **Logs**: Structured logging with correlation IDs
 
 ### Production Monitoring Stack
+
 ```yaml
 # Included exporters
 - PostgreSQL Exporter: Database metrics
@@ -346,16 +360,17 @@ PRODUCTION_HOST=your-domain.com
 ## 🚀 Deployment Strategies
 
 ### Development
+
 - Docker Compose with hot reload
 - Local development servers
 
 ### Production
+
 - Kubernetes cluster deployment
 - Horizontal pod autoscaling
 - Persistent volume claims
 - LoadBalancer services
 - Monitoring and alerting
-
 
 ---
 
