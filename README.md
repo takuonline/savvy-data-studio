@@ -344,9 +344,7 @@ PRODUCTION_HOST=your-domain.com
 ### Built-in Monitoring
 
 - **Health Checks**: `/api/health/` endpoint
-- **Metrics**: Prometheus metrics at `/metrics`
-- **Tracing**: OpenTelemetry integration
-- **Logs**: Structured logging with correlation IDs
+- **Logs**
 
 ### Production Monitoring Stack
 
@@ -367,10 +365,6 @@ PRODUCTION_HOST=your-domain.com
 ### Production
 
 - Kubernetes cluster deployment
-- Horizontal pod autoscaling
-- Persistent volume claims
-- LoadBalancer services
-- Monitoring and alerting
 
 ---
 
