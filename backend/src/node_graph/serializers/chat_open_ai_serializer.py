@@ -3,7 +3,7 @@ from node_graph.models import ChatOpenAI
 
 
 class ChatOpenaiSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="owner.username")
+    owner = serializers.ReadOnlyField(source="user.username")
 
     class Meta:
         model = ChatOpenAI

@@ -3,7 +3,7 @@ from node_graph.models import LLMServiceKeys
 
 
 class LLMServiceKeysSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="owner.username")
+    owner = serializers.ReadOnlyField(source="user.username")
     api_key_redacted = serializers.ReadOnlyField()
     id = serializers.ReadOnlyField()
     api_key = serializers.CharField(write_only=True)

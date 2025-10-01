@@ -4,6 +4,8 @@
 [![Kubernetes](https://img.shields.io/badge/kubernetes-ready-326ce5.svg)](infra/)
 
 > A sophisticated, graph-based interface for complex Large Language Model (LLM) workflows, inspired by cutting-edge research like the 'Tree of Thought' paper.
+This project also includes an unrelated dashboard section.
+
 
 ## Demo
 
