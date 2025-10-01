@@ -12,11 +12,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '0.3'      # Reduced from 0.5 - frontend doesn't need much burst
+          memory: 400M
         reservations:
-          cpus: '0.25'
-          memory: 256M
+          cpus: '0.1'      # Guaranteed baseline
+          memory: 200M
 
   data-studio-api:
     container_name: ${PROJECT_NAME}-api
@@ -36,11 +36,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 2G
+          cpus: '0.6'      # Main API burst capability (reduced from 1.0)
+          memory: 1G       # Reduced from 2G
         reservations:
-          cpus: '0.5'
-          memory: 1G
+          cpus: '0.3'      # Good guaranteed baseline
+          memory: 600M
 
   data-studio-celery-worker:
     container_name: ${PROJECT_NAME}-celery-worker
@@ -61,16 +61,17 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 1.5G
+          cpus: '0.4'      # Background worker doesn't need huge burst
+          memory: 600M     # Reduced from 1.5G
         reservations:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '0.2'      # Reasonable worker baseline
+          memory: 400M
 
   data-studio-redis:
     container_name: ${PROJECT_NAME}-redis
     restart: always
     image: redis:7.2-alpine
+    command: redis-server --maxmemory 150mb --maxmemory-policy allkeys-lru
     expose:
       - 6379
     networks:
@@ -78,11 +79,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '0.1'      # Redis doesn't need much CPU
+          memory: 200M     # Reduced from 512M
         reservations:
-          cpus: '0.1'
-          memory: 128M
+          cpus: '0.05'     # Minimal guarantee
+          memory: 100M
 
 
   data-studio-db:
@@ -100,11 +101,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 2G
+          cpus: '0.4'      # Database can burst for complex queries
+          memory: 1G       # Reduced from 2G
         reservations:
-          cpus: '0.25'
-          memory: 512M
+          cpus: '0.2'      # Guaranteed DB resources
+          memory: 600M
 
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.18.0
@@ -123,10 +124,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.1'
+          cpus: '0.05'     # Minimal exporter resources
           memory: 64M
         reservations:
-          cpus: '0.05'
+          cpus: '0.02'
           memory: 32M
 
   redis-exporter:
@@ -142,10 +143,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.1'
+          cpus: '0.05'     # Minimal exporter resources
           memory: 64M
         reservations:
-          cpus: '0.05'
+          cpus: '0.02'
           memory: 32M
 
 volumes:
