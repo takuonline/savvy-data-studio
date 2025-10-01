@@ -7,9 +7,13 @@ export function useUser() {
         ()=> AuthenticationService.me(),
         {
             revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            revalidateOnMount: false,
-        },
+            revalidateOnReconnect: true,
+            revalidateOnMount: true,
+            refreshInterval: 1000 * 60 * 30,
+            dedupingInterval: 1000 * 60 * 5,
+            errorRetryCount: 2,
+            errorRetryInterval: 1000 * 10,
+        }
     );
 
     return {
