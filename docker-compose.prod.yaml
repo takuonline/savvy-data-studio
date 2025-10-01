@@ -9,6 +9,14 @@ services:
       - 3000
     networks:
       - shared-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
   data-studio-api:
     container_name: ${PROJECT_NAME}-api
@@ -25,6 +33,14 @@ services:
     restart: always
     networks:
       - shared-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
 
   data-studio-celery-worker:
     container_name: ${PROJECT_NAME}-celery-worker
@@ -42,6 +58,14 @@ services:
       - data-studio-db
     networks:
       - shared-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1.5G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   data-studio-redis:
     container_name: ${PROJECT_NAME}-redis
@@ -51,6 +75,14 @@ services:
       - 6379
     networks:
       - shared-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
 
 
   data-studio-db:
@@ -65,6 +97,14 @@ services:
       - PGSSLCERT=${PGSSLCERT}
     networks:
       - shared-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
 
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.18.0
@@ -80,6 +120,14 @@ services:
       - shared-network  # Same network as monitoring stack
     depends_on:
       - data-studio-db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
 
   redis-exporter:
     image: oliver006/redis_exporter:v1.74.0-alpine
@@ -91,6 +139,14 @@ services:
       - shared-network
     depends_on:
       - data-studio-redis
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
 
 volumes:
   data-studio-db-data:
