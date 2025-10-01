@@ -25,6 +25,7 @@ def configure_tracing():
     otlp_exporter = OTLPSpanExporter(
         endpoint=os.getenv("TEMPO_ENDPOINT", "http://localhost:4317"),
         insecure=True,  # Set to False if using HTTPS
+        timeout=1,
     )
 
     # Add the exporter to the tracer provider
