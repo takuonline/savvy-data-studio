@@ -25,7 +25,7 @@ def configure_tracing():
         resource = Resource.create({
             "service.name": os.getenv("SERVICE_NAME", "django-app"),
             "service.version": os.getenv("SERVICE_VERSION", "1.0.0"),
-            "service.instance.id": os.getenv("HOSTNAME", "localhost"),
+            "service.instance.id": os.getenv("SERVICE_NAME", "localhost"),
             "deployment.environment": os.getenv("ENVIRONMENT", "production"),
         })
 

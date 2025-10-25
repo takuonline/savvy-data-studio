@@ -12,10 +12,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.3'      # Reduced from 0.5 - frontend doesn't need much burst
+          cpus: '0.4'
           memory: 400M
         reservations:
-          cpus: '0.1'      # Guaranteed baseline
+          cpus: '0.1'
           memory: 200M
 
   data-studio-api:
@@ -36,10 +36,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.6'      # Main API burst capability (reduced from 1.0)
-          memory: 1G       # Reduced from 2G
+          cpus: '1'
+          memory: 1.2G
         reservations:
-          cpus: '0.3'      # Good guaranteed baseline
+          cpus: '0.3'
           memory: 600M
 
   data-studio-celery-worker:
@@ -61,10 +61,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'      # Background worker doesn't need huge burst
-          memory: 600M     # Reduced from 1.5G
+          cpus: '1'
+          memory: 1G
         reservations:
-          cpus: '0.2'      # Reasonable worker baseline
+          cpus: '0.2'
           memory: 400M
 
   data-studio-redis:
@@ -79,10 +79,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.1'      # Redis doesn't need much CPU
-          memory: 200M     # Reduced from 512M
+          cpus: '0.4'
+          memory: 200M
         reservations:
-          cpus: '0.05'     # Minimal guarantee
+          cpus: '0.05'
           memory: 100M
 
 
@@ -101,10 +101,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'      # Database can burst for complex queries
-          memory: 1G       # Reduced from 2G
+          cpus: '0.8'
+          memory: 2G
         reservations:
-          cpus: '0.2'      # Guaranteed DB resources
+          cpus: '0.2'
           memory: 600M
 
   postgres-exporter:
@@ -124,8 +124,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.05'     # Minimal exporter resources
-          memory: 64M
+          cpus: '0.1'     # Minimal exporter resources
+          memory: 100M
         reservations:
           cpus: '0.02'
           memory: 32M
