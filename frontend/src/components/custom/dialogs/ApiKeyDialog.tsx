@@ -105,9 +105,9 @@ export function ApiKeyDialog(props: {
                                 formRegister={register('openaiApiKey', {
                                     required: 'This field is required',
                                     maxLength: {
-                                        value: 100,
+                                        value: 1000,
                                         message:
-                                            'You have exceeded the max length of this field of 100',
+                                            'You have exceeded the max length of this field of 1000',
                                     },
                                 })}
                             />

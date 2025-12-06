@@ -88,7 +88,7 @@ api.interceptors.response.use(
             default:
                 const errMsg =
                     error?.response?.data?.message ||
-                    'Something went wrong. Try reloading your page and if the issue persists reach out to the analytic engineering teams. Thanks';
+                    'Something went wrong. Try reloading your page and if the issue persists reach out to the support teams. Thanks';
                 console.log(errMsg);
 
                 if (typeof window !== 'undefined') {

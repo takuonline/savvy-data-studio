@@ -10,10 +10,10 @@ class LLMServiceKeys(models.Model):
         max_length=100,
     )
     api_key = models.CharField(
-        max_length=100,
+        max_length=2_000,
         null=True,
         blank=True,
-        # unique=True
+
     )
 
     api_key_redacted = models.CharField(max_length=12)
