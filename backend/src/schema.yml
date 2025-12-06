@@ -1135,8 +1135,6 @@ components:
       properties:
         owner:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
           readOnly: true
         cache:
           type: boolean
@@ -1329,8 +1327,6 @@ components:
       properties:
         owner:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
           readOnly: true
         system_prompt:
           type: string
@@ -1372,6 +1368,8 @@ components:
           readOnly: true
         owner:
           type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
           readOnly: true
         name:
           type: string
@@ -1771,8 +1769,6 @@ components:
       properties:
         owner:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
           readOnly: true
         cache:
           type: boolean
@@ -1961,8 +1957,6 @@ components:
       properties:
         owner:
           type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
-            only.
           readOnly: true
         system_prompt:
           type: string
