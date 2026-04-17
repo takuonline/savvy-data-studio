@@ -16,7 +16,12 @@ chown -R nobody:nogroup /var/run/celery /var/log/celery
 chown nobody:nogroup -R "/app"
 chmod 700 -R "/tmp"
 
-celery -A core worker --loglevel INFO --uid=nobody --gid=nogroup &
-celery -A core flower --loglevel INFO --uid=nobody --gid=nogroup &
+celery -A core worker \
+    --loglevel INFO \
+    --concurrency=6 \
+    --max-tasks-per-child=100 \
+    --uid=nobody --gid=nogroup &
 celery -A core beat --loglevel INFO --uid=nobody --gid=nogroup
+
+# celery -A core flower --loglevel INFO --uid=nobody --gid=nogroup &
 #  --schedule=/app/src/celerybeat-schedule
