@@ -89,6 +89,7 @@ services:
   data-studio-db:
     container_name: ${PROJECT_NAME}-db
     image: postgres:15.5-alpine3.19
+    restart: always
     volumes:
       - data-studio-db-data:/var/lib/postgresql/data
     environment:
