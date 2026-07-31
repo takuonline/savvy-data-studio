@@ -136,7 +136,7 @@ services:
     container_name: ${PROJECT_NAME}-redis-exporter
     restart: always
     environment:
-      REDIS_ADDR: "redis:6379"
+      REDIS_ADDR: "${PROJECT_NAME}-redis:6379"
     networks:
       - shared-network
     depends_on:
